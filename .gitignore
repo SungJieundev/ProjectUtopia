@@ -1,0 +1,15 @@
+/.idea/
+/crashdumps/
+/players/
+/plugin_data/
+/stubs/
+/worlds/
+banned-ips.txt
+banned-players.txt
+ops.txt
+plugin_list.yml
+pocketmine.yml
+server.log
+server.properties
+stub.php
+white-list.txt

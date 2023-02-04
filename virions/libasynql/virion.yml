@@ -1,0 +1,18 @@
+---
+name: libasynql
+authors:
+  - SOFe
+antigen: poggit\libasynql
+version: 4.1.1
+api: 5.0.0
+build:
+  builder: PoggitCI/1.0-beta/beta poggit-virion/1.0
+  builderName: poggit
+  buildTime: "2022-08-08T15:54:01+00:00"
+  poggitBuildId: 142611
+  buildClass: Dev
+  projectId: 287
+  projectBuildNumber: 180
+  fromCommit: 43f6f22a4860d69b26c2fbebc7122ac026689756
+  poggitResourceId: 189496
+...
