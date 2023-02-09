@@ -5,3 +5,19 @@ version: 1.0.0
 api: 5.0.0
 
 src-namespace-prefix: alvin0319\EconomyAPI
+
+permissions:
+  economyapi.command.addmoney:
+    default: op
+  economyapi.command.reducemoney:
+    default: op
+  economyapi.command.setmoney:
+    default: op
+  economyapi.command.takemoney:
+    default: op
+  economyapi.command.mymoney:
+    default: true
+  economyapi.command.topmoney:
+    default: true
+  economyapi.command.pay:
+    default: true

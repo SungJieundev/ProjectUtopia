@@ -49,14 +49,14 @@ final class Loader extends PluginBase{
 				$name = strtolower($player->getName());
 				$promises = [];
 				foreach($this->sessionToLoad as $index => $registerFunction){
-					$promises[$index] = $registerFunction($name, $player);
+					$promises[$index] = $registerFunction($name, $player, true);
 				}
 				/** @var BaseSession[] $results */
 				$results = yield from Await::all($promises);
 				foreach($results as $i => $session){
 					if($session instanceof BaseSession && isset($this->handlers[$i])){
 						$this->handlers[$i]($session);
-						$this->sessions[$name][] = $session;
+						$this->sessions[$name][spl_object_id($session)] = $session;
 					}
 				}
 				$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function() use ($player, $results) : void{
@@ -72,11 +72,9 @@ final class Loader extends PluginBase{
 		}, EventPriority::MONITOR, $this);
 		$this->getServer()->getPluginManager()->registerEvent(PlayerQuitEvent::class, function(PlayerQuitEvent $event) : void{
 			if(isset($this->sessions[$name = strtolower($event->getPlayer()->getName())])){
-				foreach($this->sessions[$name] as $sessions){
-					foreach($sessions as $session){
-						$session->onPlayerQuit();
-						$session->save();
-					}
+				foreach($this->sessions[$name] as $_ => $session){
+					$session->onPlayerQuit();
+					$session->save();
 				}
 				unset($this->sessions[$name]);
 			}
@@ -98,7 +96,7 @@ final class Loader extends PluginBase{
 	 * @return void
 	 */
 	public function registerSessionLoader(Plugin $plugin, \Closure $registerFunction, \Closure $handler) : void{
-		Utils::validateCallableSignature(function(string $name, ?Player $player = null) : \Generator{ yield; }, $registerFunction);
+		Utils::validateCallableSignature(function(string $name, ?Player $player = null, bool $createIfNotExists = false) : \Generator{ yield; }, $registerFunction);
 		Utils::validateCallableSignature(function(BaseSession $session) : void{ }, $handler);
 		$registerHandlerId = spl_object_id($registerFunction);
 		$this->sessionToLoad[$registerHandlerId] = $registerFunction;
@@ -107,7 +105,7 @@ final class Loader extends PluginBase{
 
 	public function onDisable() : void{
 		foreach($this->sessions as $sessions){
-			foreach($sessions as $session){
+			foreach($sessions as $_ => $session){
 				$session->save();
 			}
 		}
@@ -115,5 +113,11 @@ final class Loader extends PluginBase{
 		$this->sessionToLoad = [];
 		$this->handlers = [];
 		$this->taskHandlers = [];
+	}
+
+	public function removeSession(BaseSession $session) : void{
+		if(isset($this->sessions[$session->getName()][spl_object_id($session)])){
+			unset($this->sessions[$session->getName()][spl_object_id($session)]);
+		}
 	}
 }
