@@ -1,0 +1,41 @@
+{
+	"name": "alvin0319/utopia-project",
+	"authors": [
+		{
+			"name": "alvin0319",
+			"email": "me@minjae.dev"
+		}
+	],
+	"require-dev": {
+		"phpstan/phpstan": "1.9.17",
+		"pocketmine/pocketmine-mp": "dev-next-major",
+		"pocketmine/bedrock-block-upgrade-schema": "^1.0.0",
+		"pocketmine/bedrock-data": "dev-modern-world-support@dev",
+		"pocketmine/bedrock-item-upgrade-schema": "^1.0.0",
+		"pocketmine/bedrock-protocol": "~19.0.0+bedrock-1.19.60",
+		"pocketmine/binaryutils": "^0.2.1",
+		"pocketmine/callback-validator": "^1.0.2",
+		"pocketmine/classloader": "^0.3.0",
+		"pocketmine/color": "^0.3.0",
+		"pocketmine/errorhandler": "^0.6.0",
+		"pocketmine/locale-data": "~2.19.0",
+		"pocketmine/log": "^0.4.0",
+		"pocketmine/log-pthreads": "^0.5.0",
+		"pocketmine/math": "^0.4.0",
+		"pocketmine/nbt": "^0.3.2",
+		"pocketmine/raklib": "^0.15.0",
+		"pocketmine/raklib-ipc": "^0.2.0",
+		"pocketmine/snooze": "^0.4.0",
+		"friendsofphp/php-cs-fixer": "v2.19.3"
+	},
+	"scripts": {
+		"lint": ".\\bin\\php\\php.exe vendor/bin/phpstan analyse plugins",
+		"generate-baseline": "php vendor/bin/phpstan analyse plugins --generate-baseline --allow-empty-baseline",
+		"lintWithDebug": "php vendor/bin/phpstan analyse plugins --debug",
+		"fix": "php vendor/bin/php-cs-fixer fix plugins"
+	},
+	"require": {
+		"ext-yaml": "*",
+		"ext-pthreads": "*"
+	}
+}

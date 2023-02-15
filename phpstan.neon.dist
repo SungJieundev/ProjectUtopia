@@ -1,0 +1,13 @@
+includes:
+  - phpstan-baseline.neon
+
+parameters:
+  level: 8
+  scanDirectories:
+    - virions
+  excludePaths:
+    - plugins/devirion-4.0/cli.php
+  typeAliases:
+    SimpleForm: "array{type: string, title: string, content: string, buttons: list<array{text: string, texture?: array{type: string, path: string}}>}"
+    ModalForm: "array{type: string, title: string, content: string, button1: string, button2: string}"
+    CustomForm: "array{type: string, title: string, content: list<array{type: string, text: string, default?: mixed, options?: mixed, min?: mixed, max?: mixed}>}"
