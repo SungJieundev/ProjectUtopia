@@ -14,3 +14,5 @@ server.log
 server.properties
 stub.php
 white-list.txt
+
+.php-cs-fixer.cache
