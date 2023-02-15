@@ -6,7 +6,6 @@ namespace alvin0319\EconomyAPI\command;
 
 use alvin0319\EconomyAPI\EconomyAPI;
 use pocketmine\command\CommandSender;
-use pocketmine\utils\AssumptionFailedError;
 use SOFe\AwaitGenerator\Await;
 use function array_shift;
 use function ceil;
@@ -37,9 +36,6 @@ final class TopMoneyCommand extends BaseEconomyCommand{
 			if($this->plugin->getCurrency($currencyName) !== null){
 				$currency = $this->plugin->getCurrency($currencyName);
 			}
-		}
-		if($currency === null){
-			throw new AssumptionFailedError("Currency is null");
 		}
 		Await::f2c(function() use ($sender, $currency, $page) : \Generator{
 			$allRows = yield from EconomyAPI::$database->economyapiGetrows($currency->getName());

@@ -12,7 +12,6 @@ use alvin0319\EconomyAPI\util\TransactionResult;
 use alvin0319\EconomyAPI\util\TransactionType;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\utils\AssumptionFailedError;
 use SOFe\AwaitGenerator\Await;
 use function array_shift;
 use function count;
@@ -45,9 +44,6 @@ final class SetMoneyCommand extends BaseEconomyCommand{
 			if($this->plugin->getCurrency($currencyName) !== null){
 				$currency = $this->plugin->getCurrency($currencyName);
 			}
-		}
-		if($currency === null){
-			throw new AssumptionFailedError("Currency is null");
 		}
 		$targetSession = $this->plugin->getSession($player);
 		if($targetSession === null){

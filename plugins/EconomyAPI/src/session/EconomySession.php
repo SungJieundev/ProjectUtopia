@@ -22,6 +22,12 @@ final class EconomySession extends BaseSession{
 
 	private int $offlineTick = 0;
 
+	/**
+	 * @param string      $name
+	 * @param EconomyAPI  $plugin
+	 * @param Player|null $player
+	 * @param int[]       $currencies
+	 */
 	public function __construct(string $name, public readonly EconomyAPI $plugin, ?Player $player = null, array $currencies = []){
 		parent::__construct($name, $player);
 		if(count($currencies) > 0){
@@ -122,7 +128,7 @@ final class EconomySession extends BaseSession{
 	 * Queues pending closure and execute when they're loaded or immediately if they're already loaded.
 	 * Note that queueing ANY transaction in the closure is not guaranteed.
 	 *
-	 * @phpstan-param Closure() : void $closure
+	 * @phpstan-param \Closure() : void $closure
 	 */
 	public function queueClosure(\Closure $closure) : void{
 		Utils::validateCallableSignature(function(){ }, $closure);

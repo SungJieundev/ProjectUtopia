@@ -108,15 +108,6 @@ final class EconomyAPI extends PluginBase{
 		$this->defaultCurrency = $currency;
 	}
 
-	/**
-	 * @param string      $name
-	 * @param Player|null $player
-	 * @param bool        $createIfNotExists
-	 *
-	 * @return \Generator<EconomySession|null>
-	 * @phpstan-return \Generator<EconomySession|null>
-	 *
-	 */
 	public function createSession(string $name, ?Player $player = null, bool $createIfNotExists = false) : \Generator{
 		$currencies = [];
 		$exists = true;

@@ -12,8 +12,8 @@ use alvin0319\EconomyAPI\util\TransactionResult;
 use alvin0319\EconomyAPI\util\TransactionType;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\utils\AssumptionFailedError;
 use SOFe\AwaitGenerator\Await;
+use function alvin0319\ExtensionPlugin\assumeNotNull;
 use function array_shift;
 use function count;
 use function is_numeric;
@@ -32,8 +32,8 @@ final class TakeMoneyCommand extends BaseEconomyCommand{
 			$sender->sendMessage(EconomyAPI::$prefix . "사용법: /$commandLabel <플레이어> <금액> [통화]");
 			return;
 		}
-		$player = array_shift($args);
-		$amount = array_shift($args);
+		$player = assumeNotNull(array_shift($args));
+		$amount = assumeNotNull(array_shift($args));
 		if(!is_numeric($amount) || ($amount = (int) $amount) < 1){
 			$sender->sendMessage(EconomyAPI::$prefix . "금액은 1 이상의 정수여야 합니다.");
 			return;
@@ -44,9 +44,6 @@ final class TakeMoneyCommand extends BaseEconomyCommand{
 			if($this->plugin->getCurrency($currencyName) !== null){
 				$currency = $this->plugin->getCurrency($currencyName);
 			}
-		}
-		if($currency === null){
-			throw new AssumptionFailedError("Currency is null");
 		}
 		$targetSession = $this->plugin->getSession($player);
 		if($targetSession === null){
@@ -67,7 +64,7 @@ final class TakeMoneyCommand extends BaseEconomyCommand{
 			});
 			return;
 		}
-		$this->doTransaction($sender, $targetSession->getPlayer(), $amount, $currency);
+		$this->doTransaction($sender, $player, $amount, $currency);
 	}
 
 	private function doTransaction(CommandSender $sender, Player|string $player, int $amount, Currency $currency) : void{

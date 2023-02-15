@@ -12,7 +12,6 @@ use alvin0319\EconomyAPI\util\TransactionResult;
 use alvin0319\EconomyAPI\util\TransactionType;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\utils\AssumptionFailedError;
 use SOFe\AwaitGenerator\Await;
 use function array_shift;
 use function count;
@@ -54,10 +53,11 @@ final class PayCommand extends BaseEconomyCommand{
 				$currency = $this->plugin->getCurrency($currencyName);
 			}
 		}
-		if($currency === null){
-			throw new AssumptionFailedError("Currency is null");
-		}
 		$session = $this->plugin->getSession($sender);
+		if($session === null || !$session->isLoaded()){
+			$sender->sendMessage(EconomyAPI::$prefix . "잠시 후 다시 시도해주세요.");
+			return;
+		}
 		$playerSession = $this->plugin->getSession($player);
 		if($playerSession === null){
 			Await::f2c(function() use ($sender, $session, $player, $currency, $amount) : \Generator{

@@ -52,6 +52,7 @@ final class Loader extends PluginBase{
 					$promises[$index] = $registerFunction($name, $player, true);
 				}
 				/** @var BaseSession[] $results */
+				// @phpstan-ignore-next-line
 				$results = yield from Await::all($promises);
 				foreach($results as $i => $session){
 					if($session instanceof BaseSession && isset($this->handlers[$i])){
@@ -90,7 +91,7 @@ final class Loader extends PluginBase{
 	 * @param \Closure                                          $registerFunction
 	 * @param \Closure                                          $handler
 	 *
-	 * @phpstan-param Closure(string) : \Generator<BaseSession> $registerFunction
+	 * @phpstan-param \Closure(string) : \Generator<BaseSession> $registerFunction
 	 * @phpstan-param \Closure(BaseSession) : void              $handler
 	 *
 	 * @return void

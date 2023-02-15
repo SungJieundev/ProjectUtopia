@@ -25,6 +25,7 @@ namespace poggit\virion\devirion;
 use pocketmine\plugin\ApiVersion;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\Task;
+use pocketmine\utils\Utils;
 use function array_map;
 use function array_merge;
 use function array_pad;
@@ -65,12 +66,12 @@ class DEVirion extends PluginBase{
 			if(!is_dir($dir)){
 				@mkdir($dir);
 			}
-			$directory = dir($dir);
+			$directory = Utils::assumeNotFalse(dir($dir));
 			while(is_string($file = $directory->read())){
 				if(is_dir($dir . $file) and $file !== "." and $file !== ".."){
 					$path = $dir . rtrim($file, "\\/") . "/";
-				}elseif(is_file($dir . $file) && substr($file, -5) === ".phar"){
-					$path = "phar://" . rtrim(str_replace(DIRECTORY_SEPARATOR, "/", realpath($dir . $file)), "/") . "/";
+				}elseif(is_file($dir . $file) && str_ends_with($file, ".phar")){
+					$path = "phar://" . rtrim(str_replace(DIRECTORY_SEPARATOR, "/", Utils::assumeNotFalse(realpath($dir . $file))), "/") . "/";
 				}else{
 					continue;
 				}
@@ -123,7 +124,7 @@ class DEVirion extends PluginBase{
 			}
 			return;
 		}
-		$data = yaml_parse(file_get_contents($path . "virion.yml"));
+		$data = yaml_parse(Utils::assumeNotFalse(file_get_contents($path . "virion.yml")));
 		if(!is_array($data)){
 			$this->getLogger()->error("Cannot load virion: Error parsing {$path}virion.yml");
 			return;

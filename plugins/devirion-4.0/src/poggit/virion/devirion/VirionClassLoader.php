@@ -30,12 +30,9 @@ use const DIRECTORY_SEPARATOR;
 use const PHP_INT_SIZE;
 
 class VirionClassLoader extends BaseClassLoader{
-	private $messages;
-
-	/** @var \ThreadedArray|string[] */
-	private $antigenMap;
-	/** @var \ThreadedArray|string[] */
-	private $mappedClasses;
+	private \ThreadedArray $messages;
+	private \ThreadedArray $antigenMap;
+	private \ThreadedArray $mappedClasses;
 
 	public function __construct(){
 		parent::__construct();
@@ -48,6 +45,7 @@ class VirionClassLoader extends BaseClassLoader{
 		$this->antigenMap[$path] = $antigen;
 	}
 
+	/** @return string[] */
 	public function getKnownAntigens() : array{
 		$antigens = [];
 		foreach($this->antigenMap as $antigen){
@@ -56,26 +54,26 @@ class VirionClassLoader extends BaseClassLoader{
 		return $antigens;
 	}
 
-	public function findClass($class) : ?string{
-		$baseName = str_replace("\\", DIRECTORY_SEPARATOR, $class);
+	public function findClass(string $name) : ?string{
+		$baseName = str_replace("\\", DIRECTORY_SEPARATOR, $name);
 		foreach($this->antigenMap as $path => $antigen){
-			if(stripos($class, $antigen) === 0){
+			if(stripos($name, $antigen) === 0){
 				if(PHP_INT_SIZE === 8 and file_exists($path . DIRECTORY_SEPARATOR . $baseName . "__64bit.php")){
-					$this->mappedClasses[$class] = $antigen;
+					$this->mappedClasses[$name] = $antigen;
 					return $path . DIRECTORY_SEPARATOR . $baseName . "__64bit.php";
 				}
 
 				if(PHP_INT_SIZE === 4 and file_exists($path . DIRECTORY_SEPARATOR . $baseName . "__32bit.php")){
-					$this->mappedClasses[$class] = $antigen;
+					$this->mappedClasses[$name] = $antigen;
 					return $path . DIRECTORY_SEPARATOR . $baseName . "__32bit.php";
 				}
 
 				if(file_exists($path . DIRECTORY_SEPARATOR . $baseName . ".php")){
-					$this->mappedClasses[$class] = $antigen;
+					$this->mappedClasses[$name] = $antigen;
 					return $path . DIRECTORY_SEPARATOR . $baseName . ".php";
 				}
 
-				$this->messages[] = "DEVirion detected an attempt to load class $class, matching a known antigen but does not exist. Please note that this reference might be shaded in virion building and may fail to load.\n";
+				$this->messages[] = "DEVirion detected an attempt to load class $name, matching a known antigen but does not exist. Please note that this reference might be shaded in virion building and may fail to load.\n";
 			}
 		}
 

@@ -9,7 +9,6 @@ use alvin0319\EconomyAPI\EconomyAPI;
 use alvin0319\EconomyAPI\session\EconomySession;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\utils\AssumptionFailedError;
 use function array_shift;
 use function count;
 
@@ -38,9 +37,6 @@ final class MyMoneyCommand extends BaseEconomyCommand{
 			if($this->plugin->getCurrency($currencyName) !== null){
 				$currency = $this->plugin->getCurrency($currencyName);
 			}
-		}
-		if($currency === null){
-			throw new AssumptionFailedError("Currency is null");
 		}
 		$session->queueClosure(fn() => $this->sendMyMoneyMessage($sender, $session, $currency));
 	}

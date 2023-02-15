@@ -4,6 +4,7 @@
 /plugin_data/
 /stubs/
 /worlds/
+/vendor/
 banned-ips.txt
 banned-players.txt
 ops.txt
