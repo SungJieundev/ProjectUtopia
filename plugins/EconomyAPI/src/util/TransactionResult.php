@@ -16,7 +16,7 @@ use pocketmine\utils\EnumTrait;
  */
 final class TransactionResult{
 	use EnumTrait {
-		__construct as EnumTrait___construct;
+		EnumTrait::__construct as EnumTrait___construct;
 	}
 
 	protected static function setup() : void{

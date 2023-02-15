@@ -1,0 +1,20 @@
+name: Market
+author: alvin0319
+main: alvin0319\Market\Loader
+version: 1.0.0
+api: 5.0.0
+
+depend:
+  - EconomyAPI
+
+permissions:
+  market.command.open:
+    default: true
+  market.command.admin:
+    default: op
+  market.bypass:
+    default: op
+  market.command.buyprice:
+    default: op
+  market.command.sellprice:
+    default: op
