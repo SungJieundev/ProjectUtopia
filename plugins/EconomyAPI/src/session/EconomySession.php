@@ -23,10 +23,7 @@ final class EconomySession extends BaseSession{
 	private int $offlineTick = 0;
 
 	/**
-	 * @param string      $name
-	 * @param EconomyAPI  $plugin
-	 * @param Player|null $player
-	 * @param int[]       $currencies
+	 * @param int[] $currencies
 	 */
 	public function __construct(string $name, public readonly EconomyAPI $plugin, ?Player $player = null, array $currencies = []){
 		parent::__construct($name, $player);

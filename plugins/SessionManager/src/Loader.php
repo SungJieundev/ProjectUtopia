@@ -87,14 +87,8 @@ final class Loader extends PluginBase{
 	}
 
 	/**
-	 * @param Plugin                                            $plugin
-	 * @param \Closure                                          $registerFunction
-	 * @param \Closure                                          $handler
-	 *
 	 * @phpstan-param \Closure(string) : \Generator<BaseSession> $registerFunction
 	 * @phpstan-param \Closure(BaseSession) : void              $handler
-	 *
-	 * @return void
 	 */
 	public function registerSessionLoader(Plugin $plugin, \Closure $registerFunction, \Closure $handler) : void{
 		Utils::validateCallableSignature(function(string $name, ?Player $player = null, bool $createIfNotExists = false) : \Generator{ yield; }, $registerFunction);

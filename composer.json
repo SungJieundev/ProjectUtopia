@@ -26,13 +26,16 @@
 		"pocketmine/raklib": "^0.15.0",
 		"pocketmine/raklib-ipc": "^0.2.0",
 		"pocketmine/snooze": "^0.4.0",
-		"friendsofphp/php-cs-fixer": "v2.19.3"
+		"friendsofphp/php-cs-fixer": "^v3.13"
 	},
 	"scripts": {
 		"lint": ".\\bin\\php\\php.exe vendor/bin/phpstan analyse plugins",
 		"generate-baseline": "php vendor/bin/phpstan analyse plugins --generate-baseline --allow-empty-baseline",
 		"lintWithDebug": "php vendor/bin/phpstan analyse plugins --debug",
-		"fix": "php vendor/bin/php-cs-fixer fix plugins"
+		"fix": [
+			"@putenv PHP_CS_FIXER_IGNORE_ENV=true",
+			".\\bin\\php\\php.exe vendor/bin/php-cs-fixer fix plugins"
+		]
 	},
 	"require": {
 		"ext-yaml": "*",

@@ -58,12 +58,12 @@ class VirionClassLoader extends BaseClassLoader{
 		$baseName = str_replace("\\", DIRECTORY_SEPARATOR, $name);
 		foreach($this->antigenMap as $path => $antigen){
 			if(stripos($name, $antigen) === 0){
-				if(PHP_INT_SIZE === 8 and file_exists($path . DIRECTORY_SEPARATOR . $baseName . "__64bit.php")){
+				if(PHP_INT_SIZE === 8 && file_exists($path . DIRECTORY_SEPARATOR . $baseName . "__64bit.php")){
 					$this->mappedClasses[$name] = $antigen;
 					return $path . DIRECTORY_SEPARATOR . $baseName . "__64bit.php";
 				}
 
-				if(PHP_INT_SIZE === 4 and file_exists($path . DIRECTORY_SEPARATOR . $baseName . "__32bit.php")){
+				if(PHP_INT_SIZE === 4 && file_exists($path . DIRECTORY_SEPARATOR . $baseName . "__32bit.php")){
 					$this->mappedClasses[$name] = $antigen;
 					return $path . DIRECTORY_SEPARATOR . $baseName . "__32bit.php";
 				}

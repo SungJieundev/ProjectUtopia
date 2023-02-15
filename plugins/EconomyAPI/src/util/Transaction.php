@@ -10,6 +10,7 @@ use alvin0319\EconomyAPI\event\TransactionEvent;
 use alvin0319\EconomyAPI\session\EconomySession;
 use pocketmine\player\Player;
 use pocketmine\utils\AssumptionFailedError;
+use const PHP_INT_MAX;
 
 final class Transaction{
 

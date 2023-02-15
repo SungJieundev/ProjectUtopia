@@ -13,6 +13,9 @@ use alvin0319\EconomyAPI\util\TransactionType;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use SOFe\AwaitGenerator\Await;
+use function array_shift;
+use function count;
+use function is_numeric;
 
 final class AddMoneyCommand extends BaseEconomyCommand{
 

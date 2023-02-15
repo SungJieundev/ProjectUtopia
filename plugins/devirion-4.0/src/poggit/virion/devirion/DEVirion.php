@@ -42,9 +42,10 @@ use function is_string;
 use function mkdir;
 use function realpath;
 use function rtrim;
+use function str_ends_with;
 use function str_replace;
-use function substr;
 use function yaml_parse;
+use const DIRECTORY_SEPARATOR;
 use const PHP_MAJOR_VERSION;
 use const PHP_MINOR_VERSION;
 
@@ -68,7 +69,7 @@ class DEVirion extends PluginBase{
 			}
 			$directory = Utils::assumeNotFalse(dir($dir));
 			while(is_string($file = $directory->read())){
-				if(is_dir($dir . $file) and $file !== "." and $file !== ".."){
+				if(is_dir($dir . $file) && $file !== "." && $file !== ".."){
 					$path = $dir . rtrim($file, "\\/") . "/";
 				}elseif(is_file($dir . $file) && str_ends_with($file, ".phar")){
 					$path = "phar://" . rtrim(str_replace(DIRECTORY_SEPARATOR, "/", Utils::assumeNotFalse(realpath($dir . $file))), "/") . "/";
@@ -161,7 +162,7 @@ class DEVirion extends PluginBase{
 					break;
 				}
 			}
-			if(!isset($ok) and count((array) $data["php"]) > 0){
+			if(!isset($ok) && count((array) $data["php"]) > 0){
 				$this->getLogger()->error("Cannot load virion $name: Server is using incompatible PHP version " . PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION);
 				return;
 			}

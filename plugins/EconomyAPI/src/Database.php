@@ -20,10 +20,6 @@ final class Database{
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:11
 	 *
-	 * @param string $name
-	 * @param string $currency
-	 * @param float  $defaultMoney
-	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, int>
 	 */
 	public function economyapiCreate(string $name, string $currency, float $defaultMoney,) : Generator{
@@ -34,9 +30,6 @@ final class Database{
 	/**
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:16
-	 *
-	 * @param string $name
-	 * @param string $currency
 	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, list<array<string, mixed>>>
 	 */
@@ -49,8 +42,6 @@ final class Database{
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:42
 	 *
-	 * @param string $currency
-	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, list<array<string, mixed>>>
 	 */
 	public function economyapiGetrows(string $currency,) : Generator{
@@ -61,8 +52,6 @@ final class Database{
 	/**
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:27
-	 *
-	 * @param string $currency
 	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, list<array<string, mixed>>>
 	 */
@@ -85,9 +74,6 @@ final class Database{
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:38
 	 *
-	 * @param string $currency
-	 * @param int    $page
-	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, list<array<string, mixed>>>
 	 */
 	public function economyapiTop(string $currency, int $page,) : Generator{
@@ -99,11 +85,6 @@ final class Database{
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:23
 	 *
-	 * @param string $name
-	 * @param string $currency
-	 * @param float  $money
-	 * @param int    $transactionBlocked
-	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, int>
 	 */
 	public function economyapiUpdate(string $name, string $currency, float $money, int $transactionBlocked,) : Generator{
@@ -114,10 +95,6 @@ final class Database{
 	/**
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:33
-	 *
-	 * @param string $name
-	 * @param string $currency
-	 * @param int    $transactionBlocked
 	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, int>
 	 */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 const USAGE = /** @lang text */
 <<<EOU
 === DEVirion.phar usage ===
@@ -31,12 +33,10 @@ php /path/to/DEVirion.phar download <owner> <repo> <project> <version> [--branch
 
 EOU;
 
-
 if(!isset($argv[4])){
 	echo USAGE;
 	exit;
 }
-
 
 $opts = [];
 $args = []; // I don't like overwriting $argv
@@ -111,7 +111,7 @@ switch(strtolower($args[1])){
 					echo "[!] For library #$n, unknown vendor $vendor, assumed 'poggit-project'\n";
 				}
 
-				if(!isset($lib["src"]) or
+				if(!isset($lib["src"]) ||
 					count($srcParts = explode("/", trim($lib["src"], " \t\n\r\0\x0B/"))) === 0
 				){
 					echo "[!] For library #$n, 'src' attribute is missing, skipping\n";
@@ -135,7 +135,7 @@ switch(strtolower($args[1])){
 			fclose($url);
 			try{
 				$phar = new Phar($tmpFile);
-				$virionYml = yaml_parse(file_get_contents($phar["virion.yml"]));
+				$virionYml = yaml_parse(file_get_contents($phar["virion.yml"]->getContent()));
 				if(!is_array($virionYml) || !isset($virionYml["name"], $virionYml["version"])){
 					echo "[!] For library #$n, the phar file at $file is not a valid virion, skipping\n";
 					continue;
@@ -188,9 +188,6 @@ switch(strtolower($args[1])){
 }
 
 /**
- * @param $template
- * @param &$randomFile
- *
  * @return bool|resource
  *
  * @author mobius https://stackoverflow.com/a/8971248/3990767
