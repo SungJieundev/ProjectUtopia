@@ -94,3 +94,5 @@ jobs:
 
       - name: Run PHP-CS-Fixer
         run: php vendor/bin/php-cs-fixer fix --dry-run --diff --ansi
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: true
