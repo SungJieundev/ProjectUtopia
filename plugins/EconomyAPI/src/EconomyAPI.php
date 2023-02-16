@@ -58,7 +58,7 @@ final class EconomyAPI extends PluginBase{
 		$this->connector->waitAll();
 		$this->initializeCurrencies();
 		$this->registerCommands();
-		Loader::getInstance()->registerSessionLoader($this, $this->createSession(...), function(BaseSession $session) : void{
+		Loader::getInstance()->registerSessionLoader($this->createSession(...), function(BaseSession $session) : void{
 			$session->getPlayer()?->sendMessage("Session loaded!");
 		});
 	}

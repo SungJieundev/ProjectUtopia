@@ -9,7 +9,6 @@ use pocketmine\event\EventPriority;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\player\Player;
-use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\CancelTaskException;
 use pocketmine\scheduler\ClosureTask;
@@ -88,9 +87,9 @@ final class Loader extends PluginBase{
 
 	/**
 	 * @phpstan-param \Closure(string) : \Generator<BaseSession> $registerFunction
-	 * @phpstan-param \Closure(BaseSession) : void              $handler
+	 * @phpstan-param \Closure(BaseSession) : void               $handler
 	 */
-	public function registerSessionLoader(Plugin $plugin, \Closure $registerFunction, \Closure $handler) : void{
+	public function registerSessionLoader(\Closure $registerFunction, \Closure $handler) : void{
 		Utils::validateCallableSignature(function(string $name, ?Player $player = null, bool $createIfNotExists = false) : \Generator{ yield; }, $registerFunction);
 		Utils::validateCallableSignature(function(BaseSession $session) : void{ }, $handler);
 		$registerHandlerId = spl_object_id($registerFunction);
