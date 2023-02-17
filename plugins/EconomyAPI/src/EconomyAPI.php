@@ -129,7 +129,7 @@ final class EconomyAPI extends PluginBase{
 	}
 
 	public function getSession(Player|string $player) : ?EconomySession{
-		return $this->sessions[strtolower($player instanceof Player ? $player->getName() : $player)]?->get() ?? null;
+		return ($this->sessions[strtolower($player instanceof Player ? $player->getName() : $player)] ?? null)?->get();
 	}
 
 	public function removeSession(Player|string $player) : void{
