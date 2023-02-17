@@ -124,7 +124,8 @@ final class EconomyAPI extends PluginBase{
 		if(!$exists && !$createIfNotExists){
 			return null;
 		}
-		return $this->sessions[$name] = \WeakReference::create(new EconomySession($name, $this, $player, $currencies));
+		$this->sessions[$name] = \WeakReference::create($session = new EconomySession($name, $this, $player, $currencies));
+		return $session;
 	}
 
 	public function getSession(Player|string $player) : ?EconomySession{
