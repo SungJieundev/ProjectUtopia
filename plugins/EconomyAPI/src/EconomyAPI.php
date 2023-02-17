@@ -40,7 +40,7 @@ final class EconomyAPI extends PluginBase{
 
 	/** @var Currency[] */
 	private array $currencies = [];
-	/** @var EconomySession[] */
+	/** @var \WeakReference<EconomySession>[] */
 	private array $sessions = [];
 
 	protected function onLoad() : void{
@@ -124,11 +124,11 @@ final class EconomyAPI extends PluginBase{
 		if(!$exists && !$createIfNotExists){
 			return null;
 		}
-		return $this->sessions[$name] = new EconomySession($name, $this, $player, $currencies);
+		return $this->sessions[$name] = \WeakReference::create(new EconomySession($name, $this, $player, $currencies));
 	}
 
 	public function getSession(Player|string $player) : ?EconomySession{
-		return $this->sessions[strtolower($player instanceof Player ? $player->getName() : $player)] ?? null;
+		return $this->sessions[strtolower($player instanceof Player ? $player->getName() : $player)]?->get() ?? null;
 	}
 
 	public function removeSession(Player|string $player) : void{
