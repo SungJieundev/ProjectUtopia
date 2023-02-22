@@ -10,6 +10,7 @@ use pocketmine\form\Form;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 use function count;
+use function is_array;
 use function is_numeric;
 
 final readonly class MarketBuyForm implements Form{
@@ -48,7 +49,7 @@ final readonly class MarketBuyForm implements Form{
 	}
 
 	public function handleResponse(Player $player, $data) : void{
-		if($data === null || count($data) !== 3){
+		if(!is_array($data) || count($data) !== 3){
 			return;
 		}
 		[$label, $buyOrSell, $count] = $data;

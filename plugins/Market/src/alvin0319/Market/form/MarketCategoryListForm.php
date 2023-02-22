@@ -9,6 +9,7 @@ use alvin0319\Market\listener\InventoryListener;
 use pocketmine\form\Form;
 use pocketmine\player\Player;
 use function array_map;
+use function is_int;
 
 final readonly class MarketCategoryListForm implements Form{
 
@@ -26,7 +27,7 @@ final readonly class MarketCategoryListForm implements Form{
 	}
 
 	public function handleResponse(Player $player, $data) : void{
-		if($data === null){
+		if(!is_int($data)){
 			return;
 		}
 		if(!isset($this->categories[$data])){
