@@ -20,8 +20,6 @@ final readonly class Database{
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:20
 	 *
-	 * @param string $prefix
-	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, int>
 	 */
 	public function createPrefix(string $prefix,) : Generator{
@@ -32,11 +30,6 @@ final readonly class Database{
 	/**
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:42
-	 *
-	 * @param string $name
-	 * @param string $customName
-	 * @param string $prefixes
-	 * @param int    $syncBlocked
 	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, int>
 	 */
@@ -49,8 +42,6 @@ final readonly class Database{
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:24
 	 *
-	 * @param string $prefix
-	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, int>
 	 */
 	public function deletePrefix(string $prefix,) : Generator{
@@ -61,8 +52,6 @@ final readonly class Database{
 	/**
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:57
-	 *
-	 * @param string $name
 	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, int>
 	 */
@@ -75,8 +64,6 @@ final readonly class Database{
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:28
 	 *
-	 * @param string $prefix
-	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, list<array<string, mixed>>>
 	 */
 	public function getPrefix(string $prefix,) : Generator{
@@ -87,8 +74,6 @@ final readonly class Database{
 	/**
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:32
-	 *
-	 * @param int $id
 	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, list<array<string, mixed>>>
 	 */
@@ -110,8 +95,6 @@ final readonly class Database{
 	/**
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:46
-	 *
-	 * @param string $name
 	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, list<array<string, mixed>>>
 	 */
@@ -153,11 +136,6 @@ final readonly class Database{
 	/**
 	 * <h4>Declared in:</h4>
 	 * - resources/mysql.sql:53
-	 *
-	 * @param string $name
-	 * @param string $customName
-	 * @param string $prefixes
-	 * @param int    $syncBlocked
 	 *
 	 * @return Generator<mixed, 'all'|'once'|'race'|'reject'|'resolve'|array{'resolve'}|Generator<mixed, mixed, mixed, mixed>|null, mixed, int>
 	 */

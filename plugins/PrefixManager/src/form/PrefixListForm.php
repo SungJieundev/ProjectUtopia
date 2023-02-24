@@ -17,16 +17,17 @@ final readonly class PrefixListForm implements Form{
 	/** @var Prefix[] */
 	private array $prefixes;
 
-	public function __construct(public PrefixSession $session, public Player $player){ }
+	public function __construct(public PrefixSession $session, public Player $player){
+		$this->prefixes = $this->session->getPrefixes();
+	}
 
 	/** @phpstan-return SimpleForm */
 	public function jsonSerialize() : array{
-		$this->prefixes = $this->session->getPrefixes();
 		return [
 			"type" => "form",
 			"title" => "§l칭호 목록",
 			"content" => "",
-			"buttons" => array_map(static function(Prefix $prefix) : array{
+			"buttons" => array_map(function(Prefix $prefix) : array{
 				return ["text" => "- " . $prefix->prefix . ($this->session->getSelectedPrefix()->id === $prefix->id ? "\n§a착용한 칭호" : "")];
 			}, $this->prefixes)
 		];

@@ -109,7 +109,7 @@ final class PrefixSession extends BaseSession{
 	}
 
 	public function removePrefix(Prefix $prefix) : void{
-		unset($this->prefixes[array_search($prefix, $this->prefixes)]);
+		unset($this->prefixes[array_search($prefix, $this->prefixes, true)]);
 		$this->prefixes = array_values($this->prefixes);
 	}
 

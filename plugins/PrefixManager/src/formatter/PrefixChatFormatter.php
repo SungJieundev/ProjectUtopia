@@ -7,7 +7,6 @@ namespace alvin0319\PrefixManager\formatter;
 use alvin0319\PrefixManager\session\PrefixSession;
 use alvin0319\PrefixManager\util\PrefixUtil;
 use pocketmine\lang\Translatable;
-use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\chat\ChatFormatter;
 use pocketmine\player\Player;
 
