@@ -4,46 +4,32 @@ declare(strict_types=1);
 
 namespace alvin0319\PrefixManager;
 
-use alvin0319\PrefixManager\formatter\PrefixChatFormatter;
-use alvin0319\PrefixManager\prefix\Prefix;
-use alvin0319\PrefixManager\prefix\PrefixManager;
+use alvin0319\PrefixManager\command\PrefixCommand;
 use alvin0319\PrefixManager\session\PrefixSession;
-use alvin0319\SessionManager\Loader as SessionManager;
-use alvin0319\SessionManager\session\BaseSession;
-use pocketmine\event\EventPriority;
-use pocketmine\event\player\PlayerChatEvent;
-use pocketmine\item\Item;
-use pocketmine\item\VanillaItems;
+use Generator;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\AssumptionFailedError;
+use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\SingletonTrait;
 use poggit\libasynql\DataConnector;
 use poggit\libasynql\libasynql;
 use SOFe\AwaitGenerator\Await;
-use SOFe\AwaitStd\AwaitStd;
 use function count;
 use function strtolower;
 
 final class Loader extends PluginBase{
 	use SingletonTrait;
 
-	public static string $prefix = "§b§l[알림] §r§7";
-
-	private DataConnector $connector;
+	public static string $prefix = "§6§l[§f!§6] §r§7";
 
 	public static Database $database;
 
-	public static AwaitStd $std;
-
-	public PrefixManager $prefixManager;
-
-	/** @phpstan-var \WeakReference<PrefixSession>[] */
+	private DataConnector $connector;
+	/** @var PrefixSession[] */
 	private array $sessions = [];
 
-	public static Item $freePrefixItem;
-
-	public static Item $nicknameItem;
+	public const TAG_FREE_PREFIX_ITEM = "free_prefix_item";
+	public const TAG_NICKNAME_ITEM = "nickname_item";
 
 	protected function onLoad() : void{
 		self::setInstance($this);
@@ -51,105 +37,68 @@ final class Loader extends PluginBase{
 
 	protected function onEnable() : void{
 		$this->saveDefaultConfig();
-		self::$std = AwaitStd::init($this);
-		$this->prefixManager = new PrefixManager();
 		$this->connector = libasynql::create($this, $this->getConfig()->get("database"), [
-			"sqlite" => "sqlite.sql",
-			"mysql" => "mysql.sql"
+			"mysql" => "mysql.sql",
+			"sqlite" => "sqlite.sql"
 		]);
 		self::$database = new Database($this->connector);
-		Await::f2c(function() : \Generator{
-			yield from self::$database->init();
-			yield from self::$database->initSession();
-		});
+		Await::g2c(self::$database->init());
 		$this->connector->waitAll();
-
-		Await::f2c(function() : \Generator{
-			$defaultPrefix = yield from Loader::$database->getPrefix($this->getDefaultPrefix());
-			if(count($defaultPrefix) < 1){
-				yield from Loader::$database->createPrefix($this->getDefaultPrefix());
-				$rows = yield from Loader::$database->getPrefix($this->getDefaultPrefix());
-				if(count($rows) < 1){
-					throw new AssumptionFailedError("Failed to create default prefix");
-				}
-				$this->prefixManager->setDefaultPrefix(new Prefix($rows[0]["id"], $rows[0]["prefix"]));
+		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function() : void{
+			foreach($this->sessions as $_ => $session){
+				$session->tick();
 			}
-			$rows = yield from self::$database->getPrefixes();
-			if(count($rows) > 0){
-				foreach($rows as $row){
-					$this->prefixManager->addPrefix($row["prefix"], $row["id"]);
-					if($this->getDefaultPrefix() === $row["prefix"]){
-						$this->prefixManager->setDefaultPrefix(new Prefix($row["id"], $row["prefix"]));
-					}
-				}
-			}
-		});
-		SessionManager::getInstance()->registerSessionLoader($this->createSession(...), function(BaseSession $session) : void{ });
-		$this->getServer()->getPluginManager()->registerEvent(PlayerChatEvent::class, $this->onPlayerChat(...), EventPriority::NORMAL, $this);
-		self::$freePrefixItem = VanillaItems::PAPER()
-			->setCustomName("§e§l[소모품] §r§f자유칭호");
-		self::$nicknameItem = VanillaItems::PAPER()
-			->setCustomName("§e§l[소모품] §r§f닉네임 변경");
+		}), 20);
+		$this->getServer()->getCommandMap()->register("prefixmanager", new PrefixCommand());
 	}
 
 	protected function onDisable() : void{
+		foreach($this->sessions as $_ => $session){
+			$session->save();
+		}
 		$this->connector->waitAll();
 		$this->connector->close();
 	}
 
-	public function getDefaultPrefix() : string{
-		return $this->getConfig()->get("default-prefix");
-	}
-
-	public function createSession(string $name, ?Player $player = null, bool $createIfNotExists = false) : \Generator{
-		$rows = yield from Loader::$database->getSession($name);
-		$prefixes = [];
-		$customName = "";
-		$selectedPrefix = 0;
-		if(count($rows) < 1 && !$createIfNotExists){
-			return null;
+	public function createSession(Player|string $player) : void{
+		$onlinePlayer = null;
+		if($player instanceof Player){
+			$onlinePlayer = $player;
+			$player = $player->getName();
 		}
-		if(count($rows) > 0){
-			if($rows[0]["syncBlocked"] === false){
-				$customName = $rows[0]["customName"];
-				$selectedPrefix = $rows[0]["selectedPrefix"];
-				foreach($rows[0]["prefixes"] as $prefixId){
-					$prefix = Loader::getInstance()->prefixManager->getPrefix($prefixId);
-					if($prefix !== null){
-						$prefixes[] = $prefix;
-					}
-				}
-				if(count($prefixes) === 0){
-					$prefixes[] = $this->prefixManager->getDefaultPrefix();
-				}
+		$player = strtolower($player);
+		if(isset($this->sessions[$player])){
+			if($this->sessions[$player]->getPlayer() === null && $onlinePlayer !== null){
+				$this->sessions[$player]->switchOnline($onlinePlayer);
+				$this->getLogger()->debug("Player $player joined while offline session was loaded, marking session as online");
 			}
-		}else{
-			$prefixes[] = $this->prefixManager->getDefaultPrefix();
+			return;
 		}
-		$this->sessions[$name] = \WeakReference::create($session = new PrefixSession($name, $player, $customName, $prefixes, $selectedPrefix));
-		return $session;
-	}
-
-	public function getSession(Player|string $player) : ?PrefixSession{
-		return ($this->sessions[strtolower($player instanceof Player ? $player->getName() : $player)] ?? null)?->get();
+		$this->sessions[$player] = new PrefixSession($this, $player, $onlinePlayer);
 	}
 
 	public function removeSession(Player|string $player) : void{
-		if(isset($this->sessions[strtolower($player instanceof Player ? $player->getName() : $player)])){
-			unset($this->sessions[strtolower($player instanceof Player ? $player->getName() : $player)]);
+		if($player instanceof Player){
+			$player = $player->getName();
+		}
+		$player = strtolower($player);
+		if(isset($this->sessions[$player])){
+			$this->sessions[$player]->save();
+			unset($this->sessions[$player]);
 		}
 	}
 
-	private function onPlayerChat(PlayerChatEvent $event) : void{
-		$player = $event->getPlayer();
+	public function hasAccount(string $name) : Generator{
+		$rows = yield from self::$database->get(strtolower($name));
+		return count($rows) > 0;
+	}
 
-		$session = $this->getSession($player);
-
-		if($session === null){
-			$event->cancel();
-			return;
+	public function getSession(Player|string $player) : ?PrefixSession{
+		if($player instanceof Player){
+			$player = $player->getName();
 		}
-
-		$event->setFormatter(new PrefixChatFormatter($player, $session));
+		$player = strtolower($player);
+		return $this->sessions[$player] ?? null;
 	}
 }

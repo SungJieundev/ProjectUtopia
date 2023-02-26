@@ -7,5 +7,7 @@ api: 5.0.0
 src-namespace-prefix: alvin0319\PrefixManager
 
 permissions:
-  prefixmanager.bypass:
+  prefixmanager.command:
+    default: true
+  prefixmanager.command.manage:
     default: op
