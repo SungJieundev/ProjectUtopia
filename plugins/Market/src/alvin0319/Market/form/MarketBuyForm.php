@@ -25,7 +25,7 @@ final readonly class MarketBuyForm implements Form{
 			$canSell += $item->getCount();
 		}
 		$prices = $this->market->toText(true, "§f");
-		$content = "§fBuy: §f" . $prices[0] . "§f\nSell: §f" .
+		$content = "§f구매가: §f" . $prices[0] . "§f\n판매가: §f" .
 			$prices[1] . "§f\n판매 가능한 개수: §6{$canSell}§f";
 		return [
 			"type" => "custom_form",
