@@ -7,6 +7,7 @@ namespace alvin0319\PrefixManager\form;
 use alvin0319\PrefixManager\session\PrefixSession;
 use pocketmine\form\Form;
 use pocketmine\player\Player;
+use function is_int;
 
 final class PrefixMainForm implements Form{
 
@@ -27,7 +28,7 @@ final class PrefixMainForm implements Form{
 	}
 
 	public function handleResponse(Player $player, $data) : void{
-		if($data === null){
+		if(!is_int($data)){
 			return;
 		}
 		switch($data){

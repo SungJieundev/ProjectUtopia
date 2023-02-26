@@ -9,6 +9,7 @@ use alvin0319\PrefixManager\session\PrefixSession;
 use pocketmine\form\Form;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
+use function is_int;
 
 final class AdminForm implements Form{
 
@@ -29,7 +30,7 @@ final class AdminForm implements Form{
 	}
 
 	public function handleResponse(Player $player, $data) : void{
-		if($data === null){
+		if(!is_int($data)){
 			return;
 		}
 		switch($data){

@@ -10,6 +10,7 @@ use pocketmine\form\Form;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use function count;
+use function is_array;
 use function preg_match_all;
 use function str_contains;
 
@@ -36,7 +37,7 @@ final class SetNicknameForm implements Form{
 	}
 
 	public function handleResponse(Player $player, $data) : void{
-		if($data === null || count($data) !== 2){
+		if(!is_array($data) || count($data) !== 2){
 			return;
 		}
 		[, $nickname] = $data;
