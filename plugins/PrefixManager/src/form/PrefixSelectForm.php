@@ -20,7 +20,7 @@ final class PrefixSelectForm implements Form{
 		return [
 			"type" => "form",
 			"title" => "§l칭호 선택",
-			"content" => "§l원하시는 칭호를 선택해주세요.",
+			"content" => "§d* §f착용을 원하는 칭호를 선택해주세요.",
 			"buttons" => array_map(static fn(string $prefix) => ["text" => "- $prefix"], $this->session->getPrefixes())
 		];
 	}

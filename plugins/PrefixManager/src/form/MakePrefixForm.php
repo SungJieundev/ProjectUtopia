@@ -30,7 +30,7 @@ final class MakePrefixForm implements Form{
 				],
 				[
 					"type" => "input",
-					"text" => "§l칭호 입력 (위의 주의사항을 꼭 읽어주세요.)"
+					"text" => "§d* §8칭호 입력 (위의 주의사항을 꼭 읽어주세요.)"
 				]
 			]
 		];

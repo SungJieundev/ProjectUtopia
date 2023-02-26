@@ -20,9 +20,9 @@ final class PrefixMainForm implements Form{
 			"title" => "§l칭호",
 			"content" => "",
 			"buttons" => [
-				["text" => "§l칭호 선택"],
-				["text" => "§l자유칭호 만들기"],
-				["text" => "§l닉네임 바꾸기"]
+				["text" => "§l칭호 선택\n§r§d* §8칭호를 선택합니다."],
+				["text" => "§l자유칭호 만들기\n§r§d* §8자유칭호를 만듭니다."],
+				["text" => "§l닉네임 바꾸기\n§r§d* §8닉네임을 바꿉니다."]
 			]
 		];
 	}
