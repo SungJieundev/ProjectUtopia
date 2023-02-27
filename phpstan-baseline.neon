@@ -1,2 +1,21 @@
 parameters:
-	ignoreErrors: []
+	ignoreErrors:
+		-
+			message: "#^Comparison operation \"\\>\\=\" between int\\<50, 150\\> and 50 is always true\\.$#"
+			count: 1
+			path: plugins/Mine/src/Loader.php
+
+		-
+			message: "#^Comparison operation \"\\>\\=\" between int\\<55, 150\\> and 55 is always true\\.$#"
+			count: 1
+			path: plugins/Mine/src/Loader.php
+
+		-
+			message: "#^Comparison operation \"\\>\\=\" between int\\<65, 150\\> and 65 is always true\\.$#"
+			count: 1
+			path: plugins/Mine/src/Loader.php
+
+		-
+			message: "#^Comparison operation \"\\>\\=\" between int\\<75, 150\\> and 75 is always true\\.$#"
+			count: 1
+			path: plugins/Mine/src/Loader.php

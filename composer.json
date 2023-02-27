@@ -30,7 +30,7 @@
 	},
 	"scripts": {
 		"lint": ".\\bin\\php\\php.exe vendor/bin/phpstan analyse plugins",
-		"generate-baseline": "php vendor/bin/phpstan analyse plugins --generate-baseline --allow-empty-baseline",
+		"generate-baseline": ".\\bin\\php\\php.exe vendor/bin/phpstan analyse plugins --generate-baseline --allow-empty-baseline",
 		"lintWithDebug": "php vendor/bin/phpstan analyse plugins --debug",
 		"fix": [
 			"@putenv PHP_CS_FIXER_IGNORE_ENV=true",
