@@ -1,0 +1,10 @@
+name: Island
+author: alvin0319
+main: alvin0319\Island\Loader
+version: 1.0.0
+api: 5.0.0
+
+depend:
+  - EconomyAPI
+
+src-namespace-prefix: alvin0319\Island
