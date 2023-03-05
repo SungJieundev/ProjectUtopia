@@ -12,6 +12,7 @@ use pocketmine\world\Position;
 use pocketmine\world\World;
 use Symfony\Component\Filesystem\Path;
 use function is_dir;
+use const INF;
 
 final class Island{
 
@@ -36,7 +37,7 @@ final class Island{
 	private ?World $world = null;
 
 	/**
-	 * @param true[]                      $members
+	 * @param true[] $members
 	 *
 	 * @phpstan-param array<string, true> $members
 	 */
