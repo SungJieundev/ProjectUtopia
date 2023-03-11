@@ -39,6 +39,7 @@
 	},
 	"require": {
 		"ext-yaml": "*",
-		"ext-pthreads": "*"
+		"ext-pthreads": "*",
+		"ext-gd": "*"
 	}
 }
