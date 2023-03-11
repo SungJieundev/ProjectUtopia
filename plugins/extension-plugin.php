@@ -80,9 +80,12 @@ final class ExtensionPlugin extends PluginBase{
 //		}, EventPriority::NORMAL, $this);
 	}
 
-	public function savePlayerSkin(Player $player, $height = 64, $width = 64){
+	public function savePlayerSkin(Player $player, int $height = 64, int $width = 64) : void{
 		$pixel_array = str_split(bin2hex($player->getSkin()->getSkinData()), 8);
 		$image = imagecreatetruecolor($width, $height);
+		if($image === false){
+			throw new AssumptionFailedError("Failed to create GdImage instance");
+		}
 		imagealphablending($image, false);
 		imagesavealpha($image, true);
 		$position = count($pixel_array) - 1;
@@ -90,13 +93,17 @@ final class ExtensionPlugin extends PluginBase{
 			$x = $position % $width;
 			$y = ($position - $x) / $height;
 			$walkable = str_split(array_pop($pixel_array), 2);
-			$color = array_map(static function($val){
-				return hexdec($val);
+			$color = array_map(static function(string $val){
+				return (int) hexdec($val);
 			}, $walkable);
 			$alpha = array_pop($color);
 			$alpha = ((~((int) $alpha)) & 0xff) >> 1;
 			$color[] = $alpha;
-			imagesetpixel($image, $x, $y, imagecolorallocatealpha($image, ...$color));
+			$allocatedImage = imagecolorallocatealpha($image, ...$color);
+			if($allocatedImage === false){
+				throw new AssumptionFailedError("Failed to allocate color");
+			}
+			imagesetpixel($image, $x, $y, $allocatedImage);
 			$position--;
 		}
 		@unlink(Path::join($this->getDataFolder(), 'skins', $player->getName() . '.png'));
@@ -104,19 +111,29 @@ final class ExtensionPlugin extends PluginBase{
 		@imagedestroy($image);
 	}
 
-	public function savePlayerHead(Player $player){
+	public function savePlayerHead(Player $player) : void{
 		$this->savePlayerSkin($player);
 		$path = Path::join($this->getDataFolder(), 'skins', $player->getName() . '.png');
 		$image = imagecreatefrompng($path);
+		if($image === false){
+			throw new AssumptionFailedError("Failed to create GdImage instance");
+		}
 		$objective = $this->createHeadImage(8, 8);
 		for($y = 8; $y < 16; ++$y){
 			for($x = 8; $x < 16; ++$x){
-				imagesetpixel($objective, $x - 8, $y - 8, imagecolorat($image, $x, $y));
+				$coordinate = imagecolorat($image, $x, $y);
+				if($coordinate === false){
+					throw new AssumptionFailedError("Failed to get color at $x, $y");
+				}
+				imagesetpixel($objective, $x - 8, $y - 8, $coordinate);
 			}
 		}
 		for($y = 7; $y < 15; ++$y){
 			for($x = 40; $x < 48; ++$x){
 				$color = imagecolorat($image, $x, $y);
+				if($color === false){
+					throw new AssumptionFailedError("Failed to get color at $x, $y");
+				}
 				$index = imagecolorsforindex($image, $color);
 				if($index["alpha"] === 127){
 					continue;
@@ -133,11 +150,17 @@ final class ExtensionPlugin extends PluginBase{
 		imagedestroy($final);
 	}
 
-	private function createHeadImage($width, $height){
+	private function createHeadImage(int $width, int $height) : \GdImage{
 		$image = imagecreatetruecolor($width, $height);
+		if($image === false){
+			throw new AssumptionFailedError("Failed to create GdImage instance");
+		}
 		imagesavealpha($image, true);
 		imagealphablending($image, false);
 		$fill = imagecolorallocatealpha($image, 255, 255, 255, 127);
+		if($fill === false){
+			throw new AssumptionFailedError("Failed to allocate color");
+		}
 		imagefill($image, 0, 0, $fill);
 		return $image;
 	}
