@@ -1,12 +1,11 @@
 -- #!sqlite
 -- # { init
 CREATE TABLE IF NOT EXISTS warns (
-    `index` BIGINT NOT NULL AUTO_INCREMENT,
+    `index` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(30) NOT NULL,
     reason VARCHAR(255) NOT NULL,
     time VARCHAR(10) NOT NULL,
-    amount INT NOT NULL,
-    PRIMARY KEY (`index`, name)
+    amount INT NOT NULL
 )
 -- # }
 -- # { add_warn

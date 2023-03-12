@@ -13,6 +13,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use poggit\libasynql\DataConnector;
 use poggit\libasynql\libasynql;
+use SOFe\AwaitGenerator\Await;
 use function strtolower;
 
 final class Loader extends PluginBase{
@@ -37,6 +38,7 @@ final class Loader extends PluginBase{
 			"sqlite" => "sqlite.sql"
 		]);
 		self::$database = new Database($this->connector);
+		Await::g2c(self::$database->init());
 		SessionManager::getInstance()->registerSessionLoader($this->createSession(...), function(BaseSession $session) : void{
 			$player = $session->getPlayer();
 			if($player !== null && $session instanceof PlayerWarnSession){
