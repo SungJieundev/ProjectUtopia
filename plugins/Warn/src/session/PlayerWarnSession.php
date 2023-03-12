@@ -57,7 +57,7 @@ final class PlayerWarnSession extends BaseSession{
 				$amount
 			);
 			$this->warns[] = new PlayerWarnData($id, $this->name, $reason, $date, $amount);
-			Loader::getInstance()->getServer()->broadcastMessage(Loader::$prefix . "{$this->name}님이 경고 §e{$amount}§7회를 받았습니다. (사유: $reason)\n총 경고 수: " . ($warnCount = $this->getWarnCount()));
+			Loader::getInstance()->getServer()->broadcastMessage(Loader::$prefix . "{$this->name}님이 경고 §6{$amount}§7회를 받았습니다. (사유: $reason)\n총 경고 수: " . ($warnCount = $this->getWarnCount()));
 			if($warnCount >= self::MAX_WARN){
 				Loader::getInstance()->getServer()->broadcastMessage(Loader::$prefix . "{$this->name}님이 경고 초과로 밴 처리 되었습니다.");
 				if(($p = $this->getPlayer()) !== null){

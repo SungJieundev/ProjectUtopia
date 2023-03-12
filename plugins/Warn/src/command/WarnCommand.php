@@ -61,7 +61,7 @@ final class WarnCommand extends Command implements PluginOwned{
 					if(!$sender->isConnected()){
 						return;
 					}
-					$sender->sendMessage(Loader::$prefix . "§e{$name}§7님의 경고: ");
+					$sender->sendMessage(Loader::$prefix . "§6{$name}§7님의 경고: ");
 					$warns = $session->getWarns();
 					if(count($warns) === 0){
 						$sender->sendMessage(Loader::$prefix . "지급된 경고가 없습니다.");
@@ -85,7 +85,7 @@ final class WarnCommand extends Command implements PluginOwned{
 				if($session === null){
 					return;
 				}
-				$sender->sendMessage(Loader::$prefix . "§e{$sender->getName()}§7님의 경고: ");
+				$sender->sendMessage(Loader::$prefix . "§6{$sender->getName()}§7님의 경고: ");
 				$warns = $session->getWarns();
 				if(count($warns) === 0){
 					$sender->sendMessage(Loader::$prefix . "지급된 경고가 없습니다.");
@@ -119,7 +119,7 @@ final class WarnCommand extends Command implements PluginOwned{
 						return;
 					}
 					$session->addWarn($reason, $amount);
-					$sender->sendMessage(Loader::$prefix . "§e{$name}§7님에게 §e{$amount}§7개의 경고를 추가했습니다.");
+					$sender->sendMessage(Loader::$prefix . "§6{$name}§7님에게 §6{$amount}§7개의 경고를 추가했습니다.");
 				};
 				if($session === null){
 					Await::f2c(function() use ($name, $callback) : \Generator{
@@ -153,10 +153,10 @@ final class WarnCommand extends Command implements PluginOwned{
 						return;
 					}
 					if(!$session->hasWarnIndex($index)){
-						$sender->sendMessage(Loader::$prefix . "§e{$name}§7님의 경고 §e{$index}§7번을 찾을 수 없습니다.");
+						$sender->sendMessage(Loader::$prefix . "§6{$name}§7님의 경고 §6{$index}§7번을 찾을 수 없습니다.");
 						return;
 					}
-					$sender->sendMessage(Loader::$prefix . "§e{$name}§7님의 §e{$index}§7번 경고를 제거했습니다.");
+					$sender->sendMessage(Loader::$prefix . "§6{$name}§7님의 §6{$index}§7번 경고를 제거했습니다.");
 				};
 				if($session === null){
 					Await::f2c(function() use ($name, $callback) : \Generator{

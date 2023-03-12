@@ -178,7 +178,7 @@ final class Island{
 			return;
 		}
 		unset($this->members[$player]);
-		$this->broadcastMessage("§e{$player}§7님이 섬에서 " . ($kick ? "§c추방§7되었" : "탈퇴했") . "습니다.");
+		$this->broadcastMessage("§6{$player}§7님이 섬에서 " . ($kick ? "§c추방§7되었" : "탈퇴했") . "습니다.");
 	}
 
 	public function isMember(Player|string $player) : bool{
@@ -199,7 +199,7 @@ final class Island{
 	}
 
 	public function broadcastMessage(string $message, ?string $sender = null) : void{
-		self::$server->broadcastMessage("§e§l[§f섬 | $this->islandName ] §r§7" . ($sender === null ? "" : " §f$sender §7 > ") . $message, $this->getOnlineMembers());
+		self::$server->broadcastMessage("§6§l[§f섬 | $this->islandName ] §r§7" . ($sender === null ? "" : " §f$sender §7 > ") . $message, $this->getOnlineMembers());
 	}
 
 	/** @phpstan-return array{0: int, 1: int} */
