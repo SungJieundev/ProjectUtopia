@@ -19,11 +19,12 @@
 
   </p>
 </div>
-  
-## :book: Introduction  
+
+## :book: Introduction
+
 The ~~evil~~ PHP array functions give developers the pain of:
 
-* Some functions **requires array first**, but some functions **require array last**...  
+* Some functions **requires array first**, but some functions **require array last**...
 * Some functions **returns result**, but some functions **modify referenced variables**...
 * Code was **line-break** because since it is a function...
 * Each function has **different parameters to the callback function**...
@@ -34,30 +35,38 @@ I created this library to solve these problems and make code flow like `js-array
 For a detailed description, [Click here (GitBook)](https://arrayutils.docs.present.kim/)
 
 -----
-  
+
 ## :package: Installation
-You can use this library with poggit.  
+
+You can use this library with poggit.
+
 - Go to [**Poggit**](https://poggit.pmmp.io/ci/presentkim-pm/arrayutils/~)
 
 > **Note** for modern PHP developer  
 > You can use this library with composer.
-> - Go to [**Packagist**](https://packagist.org/packages/presentkim/arrayutils) 
+> - Go to [**Packagist**](https://packagist.org/packages/presentkim/arrayutils)
 
 -----
 
-## :memo: License  
-> You can check out the full license [here](LICENSE)  
-  
-This project is licensed under the terms of the **MIT** license  
+## :memo: License
+
+> You can check out the full license [here](LICENSE)
+
+This project is licensed under the terms of the **MIT** license
 
 
 [poggit-status-badge]: https://poggit.pmmp.io/ci.badge/presentkim-pm/arrayutils/arrayutils?style=for-the-badge
+
 [stars-badge]: https://img.shields.io/github/stars/presentkim-pm/arrayutils.svg?style=for-the-badge
+
 [license-badge]: https://img.shields.io/github/license/presentkim-pm/arrayutils.svg?style=for-the-badge
 
 [poggit-url]: https://poggit.pmmp.io/ci/presentkim-pm/arrayutils/arrayutils
+
 [stars-url]: https://github.com/presentkim-pm/arrayutils/stargazers
+
 [issues-url]: https://github.com/presentkim-pm/arrayutils/issues
+
 [license-url]: https://github.com/presentkim-pm/arrayutils/blob/main/LICENSE
 
 [pmmp-url]: https://github.com/pmmp/Pocketmine-MP

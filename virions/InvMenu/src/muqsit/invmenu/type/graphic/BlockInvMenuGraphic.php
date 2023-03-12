@@ -22,7 +22,8 @@ final class BlockInvMenuGraphic implements PositionedInvMenuGraphic{
 		private Vector3 $position,
 		private ?InvMenuGraphicNetworkTranslator $network_translator = null,
 		private int $animation_duration = 0
-	){}
+	){
+	}
 
 	public function getPosition() : Vector3{
 		return $this->position;

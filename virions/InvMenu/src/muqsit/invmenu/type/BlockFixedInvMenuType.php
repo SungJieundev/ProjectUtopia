@@ -20,7 +20,8 @@ final class BlockFixedInvMenuType implements FixedInvMenuType{
 		private Block $block,
 		private int $size,
 		private ?InvMenuGraphicNetworkTranslator $network_translator = null
-	){}
+	){
+	}
 
 	public function getSize() : int{
 		return $this->size;

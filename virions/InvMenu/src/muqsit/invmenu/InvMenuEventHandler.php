@@ -14,13 +14,15 @@ use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\network\mcpe\protocol\NetworkStackLatencyPacket;
 
 final class InvMenuEventHandler implements Listener{
-	
+
 	public function __construct(
 		private PlayerManager $player_manager
-	){}
+	){
+	}
 
 	/**
 	 * @param DataPacketReceiveEvent $event
+	 *
 	 * @priority NORMAL
 	 */
 	public function onDataPacketReceive(DataPacketReceiveEvent $event) : void{
@@ -35,6 +37,7 @@ final class InvMenuEventHandler implements Listener{
 
 	/**
 	 * @param InventoryCloseEvent $event
+	 *
 	 * @priority MONITOR
 	 */
 	public function onInventoryClose(InventoryCloseEvent $event) : void{
@@ -53,6 +56,7 @@ final class InvMenuEventHandler implements Listener{
 
 	/**
 	 * @param InventoryTransactionEvent $event
+	 *
 	 * @priority NORMAL
 	 */
 	public function onInventoryTransaction(InventoryTransactionEvent $event) : void{
@@ -84,7 +88,7 @@ final class InvMenuEventHandler implements Listener{
 		}
 
 		if(count($network_stack_callbacks) > 0){
-			$player_instance->getNetwork()->wait(PlayerNetwork::DELAY_TYPE_ANIMATION_WAIT, static function(bool $success) use($player, $network_stack_callbacks) : bool{
+			$player_instance->getNetwork()->wait(PlayerNetwork::DELAY_TYPE_ANIMATION_WAIT, static function(bool $success) use ($player, $network_stack_callbacks) : bool{
 				if($success){
 					foreach($network_stack_callbacks as $callback){
 						$callback($player);

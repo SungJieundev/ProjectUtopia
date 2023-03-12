@@ -23,54 +23,50 @@ declare(strict_types=1);
 namespace poggit\libasynql\base;
 
 use Threaded;
+use ThreadedArray;
+use ThreadedBase;
 use function serialize;
 
-class QuerySendQueue extends \ThreadedBase
-{
-    /** @var bool */
-    private $invalidated = false;
-    /** @var \ThreadedArray */
-    private $queries;
+class QuerySendQueue extends ThreadedBase{
+	/** @var bool */
+	private $invalidated = false;
+	/** @var ThreadedArray */
+	private $queries;
 
-    public function __construct()
-    {
-        $this->queries = new \ThreadedArray();
-    }
+	public function __construct(){
+		$this->queries = new ThreadedArray();
+	}
 
-    public function scheduleQuery(int $queryId, array $modes, array $queries, array $params): void
-    {
-        if ($this->invalidated) {
-            throw new QueueShutdownException('You cannot schedule a query on an invalidated queue.');
-        }
-        $this->synchronized(function () use ($queryId, $modes, $queries, $params): void {
-            $this->queries[] = serialize([$queryId, $modes, $queries, $params]);
-            $this->notifyOne();
-        });
-    }
+	public function scheduleQuery(int $queryId, array $modes, array $queries, array $params) : void{
+		if($this->invalidated){
+			throw new QueueShutdownException('You cannot schedule a query on an invalidated queue.');
+		}
+		$this->synchronized(function() use ($queryId, $modes, $queries, $params) : void{
+			$this->queries[] = serialize([$queryId, $modes, $queries, $params]);
+			$this->notifyOne();
+		});
+	}
 
-    public function fetchQuery(): ?string
-    {
-        return $this->synchronized(function (): ?string {
-            while ($this->queries->count() === 0 && !$this->isInvalidated()) {
-                $this->wait();
-            }
-            return $this->queries->shift();
-        });
-    }
+	public function fetchQuery() : ?string{
+		return $this->synchronized(function() : ?string{
+			while($this->queries->count() === 0 && !$this->isInvalidated()){
+				$this->wait();
+			}
+			return $this->queries->shift();
+		});
+	}
 
-    public function invalidate(): void
-    {
-        $this->synchronized(function (): void {
-            $this->invalidated = true;
-            $this->notify();
-        });
-    }
+	public function invalidate() : void{
+		$this->synchronized(function() : void{
+			$this->invalidated = true;
+			$this->notify();
+		});
+	}
 
-    /**
-     * @return bool
-     */
-    public function isInvalidated(): bool
-    {
-        return $this->invalidated;
-    }
+	/**
+	 * @return bool
+	 */
+	public function isInvalidated() : bool{
+		return $this->invalidated;
+	}
 }

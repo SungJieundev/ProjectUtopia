@@ -2,4 +2,4 @@ name: await-std
 author: SOFe
 antigen: SOFe\AwaitStd
 version: 0.2.0
-api: [5.0.0]
+api: [ 5.0.0 ]

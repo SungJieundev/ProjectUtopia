@@ -17,7 +17,8 @@ final class SimpleInvMenuTransaction implements InvMenuTransaction{
 		private Item $in,
 		private SlotChangeAction $action,
 		private InventoryTransaction $transaction
-	){}
+	){
+	}
 
 	public function getPlayer() : Player{
 		return $this->player;

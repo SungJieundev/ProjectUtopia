@@ -24,9 +24,7 @@ namespace SOFe\AwaitGenerator;
 
 use Closure;
 use Generator;
-use Iterator;
 use Throwable;
-use function func_num_args;
 
 /**
  * An adapter to convert an async function into an async iterator.

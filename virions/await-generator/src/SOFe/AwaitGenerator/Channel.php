@@ -22,9 +22,9 @@ declare(strict_types=1);
 
 namespace SOFe\AwaitGenerator;
 
+use Generator;
 use function array_shift;
 use function count;
-use Generator;
 
 /**
  * A channel allows coroutines to communicate by sending and polling values in an FIFO stream.
@@ -57,7 +57,7 @@ final class Channel{
 			$this->state = new SendingChannelState;
 		}
 
-		yield from Await::promise(function($resolve) use($value){
+		yield from Await::promise(function($resolve) use ($value){
 			$this->state->queue[] = [$value, $resolve];
 		});
 	}
@@ -81,8 +81,8 @@ final class Channel{
 	 *
 	 * @param T $value
 	 */
-	public function trySend($value) : bool {
-		if($this->state instanceof ReceivingChannelState) {
+	public function trySend($value) : bool{
+		if($this->state instanceof ReceivingChannelState){
 			$receiver = array_shift($this->state->queue);
 			if(count($this->state->queue) === 0){
 				$this->state = new EmptyChannelState;
@@ -124,12 +124,13 @@ final class Channel{
 	 * Returns `$default` if there is no sender waiting.
 	 *
 	 * @template U
+	 *
 	 * @param U $default
 	 *
 	 * @return T|U
 	 */
-	public function tryReceiveOr($default) {
-		if($this->state instanceof SendingChannelState) {
+	public function tryReceiveOr($default){
+		if($this->state instanceof SendingChannelState){
 			[$value, $sender] = array_shift($this->state->queue);
 			if(count($this->state->queue) === 0){
 				$this->state = new EmptyChannelState;
@@ -141,7 +142,7 @@ final class Channel{
 		return $default;
 	}
 
-	public function getSendQueueSize() : int {
+	public function getSendQueueSize() : int{
 		if($this->state instanceof SendingChannelState){
 			return count($this->state->queue);
 		}
@@ -149,7 +150,7 @@ final class Channel{
 		return 0;
 	}
 
-	public function getReceiveQueueSize() : int {
+	public function getReceiveQueueSize() : int{
 		if($this->state instanceof ReceivingChannelState){
 			return count($this->state->queue);
 		}

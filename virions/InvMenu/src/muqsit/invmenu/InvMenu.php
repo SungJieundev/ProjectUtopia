@@ -25,7 +25,8 @@ class InvMenu implements InvMenuTypeIds{
 
 	/**
 	 * @param string $identifier
-	 * @param mixed ...$args
+	 * @param mixed  ...$args
+	 *
 	 * @return InvMenu
 	 */
 	public static function create(string $identifier, ...$args) : InvMenu{
@@ -34,10 +35,11 @@ class InvMenu implements InvMenuTypeIds{
 
 	/**
 	 * @param (Closure(DeterministicInvMenuTransaction) : void)|null $listener
+	 *
 	 * @return Closure(InvMenuTransaction) : InvMenuTransactionResult
 	 */
 	public static function readonly(?Closure $listener = null) : Closure{
-		return static function(InvMenuTransaction $transaction) use($listener) : InvMenuTransactionResult{
+		return static function(InvMenuTransaction $transaction) use ($listener) : InvMenuTransactionResult{
 			$result = $transaction->discard();
 			if($listener !== null){
 				$listener(new DeterministicInvMenuTransaction($transaction, $result));
@@ -77,6 +79,7 @@ class InvMenu implements InvMenuTypeIds{
 
 	/**
 	 * @param (Closure(InvMenuTransaction) : InvMenuTransactionResult)|null $listener
+	 *
 	 * @return self
 	 */
 	public function setListener(?Closure $listener) : self{
@@ -86,6 +89,7 @@ class InvMenu implements InvMenuTypeIds{
 
 	/**
 	 * @param (Closure(Player, Inventory) : void)|null $listener
+	 *
 	 * @return self
 	 */
 	public function setInventoryCloseListener(?Closure $listener) : self{
@@ -94,8 +98,8 @@ class InvMenu implements InvMenuTypeIds{
 	}
 
 	/**
-	 * @param Player $player
-	 * @param string|null $name
+	 * @param Player                      $player
+	 * @param string|null                 $name
 	 * @param (Closure(bool) : void)|null $callback
 	 */
 	final public function send(Player $player, ?string $name = null, ?Closure $callback = null) : void{
@@ -114,7 +118,7 @@ class InvMenu implements InvMenuTypeIds{
 			$network->dropPendingOfType(PlayerNetwork::DELAY_TYPE_OPERATION);
 		}
 
-		$network->waitUntil(PlayerNetwork::DELAY_TYPE_OPERATION, 0, function(bool $success) use($player, $session, $name, $callback) : bool{
+		$network->waitUntil(PlayerNetwork::DELAY_TYPE_OPERATION, 0, function(bool $success) use ($player, $session, $name, $callback) : bool{
 			if(!$success){
 				if($callback !== null){
 					$callback(false);
@@ -124,7 +128,7 @@ class InvMenu implements InvMenuTypeIds{
 
 			$graphic = $this->type->createGraphic($this, $player);
 			if($graphic !== null){
-				$session->setCurrentMenu(new InvMenuInfo($this, $graphic, $name), static function(bool $success) use($callback) : void{
+				$session->setCurrentMenu(new InvMenuInfo($this, $graphic, $name), static function(bool $success) use ($callback) : void{
 					if($callback !== null){
 						$callback($success);
 					}
@@ -154,10 +158,11 @@ class InvMenu implements InvMenuTypeIds{
 	}
 
 	/**
+	 * @param Player $player
+	 *
+	 * @return bool
 	 * @internal use InvMenu::send() instead.
 	 *
-	 * @param Player $player
-	 * @return bool
 	 */
 	public function sendInventory(Player $player) : bool{
 		return $player->setCurrentWindow($this->getInventory());

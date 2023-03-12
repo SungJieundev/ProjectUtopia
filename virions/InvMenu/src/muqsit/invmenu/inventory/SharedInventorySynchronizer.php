@@ -12,7 +12,8 @@ final class SharedInventorySynchronizer implements InventoryListener{
 
 	public function __construct(
 		private Inventory $inventory
-	){}
+	){
+	}
 
 	public function getSynchronizingInventory() : Inventory{
 		return $this->inventory;

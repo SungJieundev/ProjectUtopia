@@ -22,10 +22,8 @@ declare(strict_types=1);
 
 namespace poggit\libasynql\libs\SOFe\AwaitGenerator;
 
-class UnawaitedCallbackException extends AwaitException
-{
-    public function __construct(string $action)
-    {
-        parent::__construct("$action is disallowed when Await::RESOLVE or Await::REJECT was yielded but is not awaited through Await::ONCE, Await::ALL or Await::RACE");
-    }
+class UnawaitedCallbackException extends AwaitException{
+	public function __construct(string $action){
+		parent::__construct("$action is disallowed when Await::RESOLVE or Await::REJECT was yielded but is not awaited through Await::ONCE, Await::ALL or Await::RACE");
+	}
 }

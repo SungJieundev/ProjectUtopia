@@ -31,11 +31,11 @@ use Exception;
 final class InterruptException extends Exception{
 	private static $instance;
 
-	public static function get() : self {
+	public static function get() : self{
 		self::$instance = self::$instance ?? new self;
 		return self::$instance;
 	}
 
-	private function __construct() {
+	private function __construct(){
 	}
 }

@@ -20,7 +20,7 @@ final class PlayerManager{
 
 	/** @var PlayerSession[] */
 	private array $sessions = [];
-	
+
 	public function __construct(Plugin $registrant){
 		$this->network_handler_registry = new PlayerNetworkHandlerRegistry();
 

@@ -25,38 +25,35 @@ namespace poggit\libasynql\libs\SOFe\AwaitGenerator;
 use Throwable;
 use function assert;
 
-abstract class PromiseState
-{
-    public const STATE_PENDING = 0;
-    public const STATE_RESOLVED = 1;
-    public const STATE_REJECTED = 2;
+abstract class PromiseState{
+	public const STATE_PENDING = 0;
+	public const STATE_RESOLVED = 1;
+	public const STATE_REJECTED = 2;
 
-    /** @var int */
-    protected $state = self::STATE_PENDING;
-    /** @var mixed */
-    protected $resolved;
-    /** @var Throwable */
-    protected $rejected;
+	/** @var int */
+	protected $state = self::STATE_PENDING;
+	/** @var mixed */
+	protected $resolved;
+	/** @var Throwable */
+	protected $rejected;
 
-    /** @var bool */
-    protected $cancelled = false;
+	/** @var bool */
+	protected $cancelled = false;
 
-    /**
-     * @param mixed $value
-     */
-    public function resolve($value): void
-    {
-        assert($this->state === self::STATE_PENDING);
+	/**
+	 * @param mixed $value
+	 */
+	public function resolve($value) : void{
+		assert($this->state === self::STATE_PENDING);
 
-        $this->state = self::STATE_RESOLVED;
-        $this->resolved = $value;
-    }
+		$this->state = self::STATE_RESOLVED;
+		$this->resolved = $value;
+	}
 
-    public function reject(Throwable $value): void
-    {
-        assert($this->state === self::STATE_PENDING);
+	public function reject(Throwable $value) : void{
+		assert($this->state === self::STATE_PENDING);
 
-        $this->state = self::STATE_REJECTED;
-        $this->rejected = $value;
-    }
+		$this->state = self::STATE_REJECTED;
+		$this->rejected = $value;
+	}
 }

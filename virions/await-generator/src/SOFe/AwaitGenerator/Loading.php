@@ -43,7 +43,7 @@ final class Loading{
 	 * @param Closure(): Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T> $loader
 	 */
 	public function __construct(Closure $loader){
-		Await::f2c(function() use($loader) {
+		Await::f2c(function() use ($loader){
 			$this->value = yield from $loader();
 			$onLoaded = $this->onLoaded;
 			$this->onLoaded = null;
@@ -73,10 +73,12 @@ final class Loading{
 
 	/**
 	 * @template U
+	 *
 	 * @param U $default
+	 *
 	 * @return T|U
 	 */
-	public function getSync($default) {
+	public function getSync($default){
 		return $this->onLoaded === null ? $this->value : $default;
 	}
 }

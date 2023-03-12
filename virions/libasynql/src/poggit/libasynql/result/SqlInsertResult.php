@@ -22,19 +22,16 @@ declare(strict_types=1);
 
 namespace poggit\libasynql\result;
 
-class SqlInsertResult extends SqlChangeResult
-{
-    /** @var int */
-    private $insertId;
+class SqlInsertResult extends SqlChangeResult{
+	/** @var int */
+	private $insertId;
 
-    public function __construct(int $affectedRows, int $insertId)
-    {
-        parent::__construct($affectedRows);
-        $this->insertId = $insertId;
-    }
+	public function __construct(int $affectedRows, int $insertId){
+		parent::__construct($affectedRows);
+		$this->insertId = $insertId;
+	}
 
-    public function getInsertId(): int
-    {
-        return $this->insertId;
-    }
+	public function getInsertId() : int{
+		return $this->insertId;
+	}
 }

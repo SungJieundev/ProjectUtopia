@@ -43,83 +43,81 @@ use RuntimeException;
  * Since it is impossible to identify which coroutine is running,
  * recursive mutex locking will lead to deadlock.
  */
-final class Mutex
-{
-    private bool $acquired = false;
+final class Mutex{
+	private bool $acquired = false;
 
-    /** @var list<Closure(): void> */
-    private array $queue = [];
+	/** @var list<Closure(): void> */
+	private array $queue = [];
 
-    /**
-     * Returns whether the mutex is idle,
-     * i.e. not acquired by any coroutine.
-     */
-    public function isIdle(): bool
-    {
-        return !$this->acquired;
-    }
+	/**
+	 * Returns whether the mutex is idle,
+	 * i.e. not acquired by any coroutine.
+	 */
+	public function isIdle() : bool{
+		return !$this->acquired;
+	}
 
-    public function acquire(): Generator
-    {
-        if (!$this->acquired) {
-            // Mutex is idle, no extra work to do
-            $this->acquired = true;
-            return;
-        }
+	public function acquire() : Generator{
+		if(!$this->acquired){
+			// Mutex is idle, no extra work to do
+			$this->acquired = true;
+			return;
+		}
 
-        $this->queue[] = yield Await::RESOLVE;
+		$this->queue[] = yield Await::RESOLVE;
 
-        yield Await::ONCE;
+		yield Await::ONCE;
 
-        if (!$this->acquired) {
-            throw new AssertionError('Mutex->acquired should remain true if queue is nonempty');
-        }
-    }
+		if(!$this->acquired){
+			throw new AssertionError('Mutex->acquired should remain true if queue is nonempty');
+		}
+	}
 
-    public function release(): void
-    {
-        if (!$this->acquired) {
-            throw new RuntimeException('Attempt to release a released mutex');
-        }
+	public function release() : void{
+		if(!$this->acquired){
+			throw new RuntimeException('Attempt to release a released mutex');
+		}
 
-        if (count($this->queue) === 0) {
-            // Mutex is now idle, just clean up.
-            $this->acquired = false;
-            return;
-        }
+		if(count($this->queue) === 0){
+			// Mutex is now idle, just clean up.
+			$this->acquired = false;
+			return;
+		}
 
-        $next = array_shift($this->queue);
+		$next = array_shift($this->queue);
 
-        // When this call completes, $next may or may not be complete,
-        // and $this->queue may or may not be modified.
-        // `release()` may also have been called within `$next()`.
-        // Therefore, we must not do anything after this call,
-        // and leave the changes like setting $this->acquired to false to the other release call.
-        $next();
-    }
+		// When this call completes, $next may or may not be complete,
+		// and $this->queue may or may not be modified.
+		// `release()` may also have been called within `$next()`.
+		// Therefore, we must not do anything after this call,
+		// and leave the changes like setting $this->acquired to false to the other release call.
+		$next();
+	}
 
-    /**
-     * @template T
-     * @param Closure(): Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T> $generatorClosure
-     * @return Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T>
-     */
-    public function runClosure(Closure $generatorClosure): Generator
-    {
-        return yield from $this->run($generatorClosure());
-    }
+	/**
+	 * @template T
+	 *
+	 * @param Closure(): Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T> $generatorClosure
+	 *
+	 * @return Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T>
+	 */
+	public function runClosure(Closure $generatorClosure) : Generator{
+		return yield from $this->run($generatorClosure());
+	}
 
-    /**
-     * @template T
-     * @param Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T> $generator
-     * @return Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T>
-     */
-    public function run(Generator $generator): Generator
-    {
-        yield from $this->acquire();
-        try {
-            return yield from $generator;
-        } finally {
-            $this->release();
-        }
-    }
+	/**
+	 * @template T
+	 *
+	 * @param Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T> $generator
+	 *
+	 * @return Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T>
+	 */
+	public function run(Generator $generator) : Generator{
+		yield from $this->acquire();
+		try{
+			return yield from $generator;
+		}finally{
+			$this->release();
+		}
+	}
 }

@@ -24,33 +24,28 @@ namespace poggit\libasynql\generic;
 
 use InvalidArgumentException;
 
-class GenericStatementFileParseException extends InvalidArgumentException
-{
-    private $problem;
-    private $lineNo;
-    private $queryFile;
+class GenericStatementFileParseException extends InvalidArgumentException{
+	private $problem;
+	private $lineNo;
+	private $queryFile;
 
-    public function __construct(string $problem, int $lineNo, string $file = null)
-    {
-        $this->problem = $problem;
-        $this->lineNo = $lineNo;
-        $this->queryFile = $file ?? 'SQL file';
+	public function __construct(string $problem, int $lineNo, string $file = null){
+		$this->problem = $problem;
+		$this->lineNo = $lineNo;
+		$this->queryFile = $file ?? 'SQL file';
 
-        parent::__construct("Error parsing prepared statement file: $problem on line $lineNo in $file");
-    }
+		parent::__construct("Error parsing prepared statement file: $problem on line $lineNo in $file");
+	}
 
-    public function getProblem(): string
-    {
-        return $this->problem;
-    }
+	public function getProblem() : string{
+		return $this->problem;
+	}
 
-    public function getLineNo(): int
-    {
-        return $this->lineNo;
-    }
+	public function getLineNo() : int{
+		return $this->lineNo;
+	}
 
-    public function getQueryFile(): string
-    {
-        return $this->queryFile;
-    }
+	public function getQueryFile() : string{
+		return $this->queryFile;
+	}
 }

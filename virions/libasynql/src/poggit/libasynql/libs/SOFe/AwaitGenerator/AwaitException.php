@@ -24,7 +24,6 @@ namespace poggit\libasynql\libs\SOFe\AwaitGenerator;
 
 use RuntimeException;
 
-class AwaitException extends RuntimeException
-{
+class AwaitException extends RuntimeException{
 
 }

@@ -6,4 +6,5 @@ namespace SOFe\AwaitStd;
 
 use Exception;
 
-final class PromiseRejectedException extends Exception {}
+final class PromiseRejectedException extends Exception{
+}

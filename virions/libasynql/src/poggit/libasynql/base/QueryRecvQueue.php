@@ -25,38 +25,36 @@ namespace poggit\libasynql\base;
 use poggit\libasynql\SqlError;
 use poggit\libasynql\SqlResult;
 use Threaded;
+use ThreadedArray;
+use ThreadedBase;
 use function is_string;
 use function serialize;
 use function unserialize;
 
-class QueryRecvQueue extends \ThreadedBase
-{
-	private \ThreadedArray $data;
+class QueryRecvQueue extends ThreadedBase{
+	private ThreadedArray $data;
 
 	public function __construct(){
-		$this->data = new \ThreadedArray();
+		$this->data = new ThreadedArray();
 	}
 
 	/**
-     * @param SqlResult[] $results
-     */
-    public function publishResult(int $queryId, array $results): void
-    {
-        $this->data[] = serialize([$queryId, $results]);
-    }
+	 * @param SqlResult[] $results
+	 */
+	public function publishResult(int $queryId, array $results) : void{
+		$this->data[] = serialize([$queryId, $results]);
+	}
 
-    public function publishError(int $queryId, SqlError $error): void
-    {
-        $this->data[] = serialize([$queryId, $error]);
-    }
+	public function publishError(int $queryId, SqlError $error) : void{
+		$this->data[] = serialize([$queryId, $error]);
+	}
 
-    public function fetchResults(&$queryId, &$results): bool
-    {
-        $row = $this->data->shift();
-        if (is_string($row)) {
-            [$queryId, $results] = unserialize($row, ['allowed_classes' => true]);
-            return true;
-        }
-        return false;
-    }
+	public function fetchResults(&$queryId, &$results) : bool{
+		$row = $this->data->shift();
+		if(is_string($row)){
+			[$queryId, $results] = unserialize($row, ['allowed_classes' => true]);
+			return true;
+		}
+		return false;
+	}
 }

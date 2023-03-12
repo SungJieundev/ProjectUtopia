@@ -22,8 +22,7 @@ declare(strict_types=1);
 
 namespace poggit\libasynql;
 
-interface SqlDialect
-{
-    public const SQLITE = 'sqlite';
-    public const MYSQL = 'mysql';
+interface SqlDialect{
+	public const SQLITE = 'sqlite';
+	public const MYSQL = 'mysql';
 }

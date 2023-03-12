@@ -15,10 +15,10 @@ use pocketmine\plugin\Plugin;
  * Developers should ALWAYS handle this exception.
  * Usually, this is handled by returning in thr `catch` block.
  */
-final class DisposeException extends Exception {
+final class DisposeException extends Exception{
 	private object $disposable;
 
-	public function __construct(Plugin $plugin, string $eventDescription, object $disposable) {
+	public function __construct(Plugin $plugin, string $eventDescription, object $disposable){
 		parent::__construct("Plugin {$plugin->getName()} did not handle the case of $eventDescription when awaiting its events");
 		$this->disposable = $disposable;
 	}
@@ -26,7 +26,7 @@ final class DisposeException extends Exception {
 	/**
 	 * @return object
 	 */
-	public function getDisposable() {
+	public function getDisposable(){
 		return $this->disposable;
 	}
 }

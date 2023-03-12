@@ -27,118 +27,106 @@ use pocketmine\Server;
 use pocketmine\snooze\SleeperNotifier;
 use poggit\libasynql\SqlThread;
 
-class SqlThreadPool implements SqlThread
-{
-    /** @var SleeperNotifier */
-    private $notifier;
-    /** @var callable */
-    private $workerFactory;
-    /** @var SqlSlaveThread[] */
-    private $workers = [];
-    /** @var int */
-    private $workerLimit;
+class SqlThreadPool implements SqlThread{
+	/** @var SleeperNotifier */
+	private $notifier;
+	/** @var callable */
+	private $workerFactory;
+	/** @var SqlSlaveThread[] */
+	private $workers = [];
+	/** @var int */
+	private $workerLimit;
 
-    /** @var QuerySendQueue */
-    private $bufferSend;
-    /** @var QueryRecvQueue */
-    private $bufferRecv;
+	/** @var QuerySendQueue */
+	private $bufferSend;
+	/** @var QueryRecvQueue */
+	private $bufferRecv;
 
-    /** @var DataConnectorImpl|null */
-    private $dataConnector = null;
+	/** @var DataConnectorImpl|null */
+	private $dataConnector = null;
 
-    /**
-     * @param DataConnectorImpl $dataConnector
-     */
-    public function setDataConnector(DataConnectorImpl $dataConnector): void
-    {
-        $this->dataConnector = $dataConnector;
-    }
+	/**
+	 * @param DataConnectorImpl $dataConnector
+	 */
+	public function setDataConnector(DataConnectorImpl $dataConnector) : void{
+		$this->dataConnector = $dataConnector;
+	}
 
-    /**
-     * SqlThreadPool constructor.
-     *
-     * @param callable $workerFactory create a child worker: <code>function(?Threaded $bufferSend = null, ?Threaded $bufferRecv = null) : {@link BaseSqlThread}{}</code>
-     * @param int $workerLimit the maximum number of workers to create. Workers are created lazily.
-     */
-    public function __construct(callable $workerFactory, int $workerLimit)
-    {
-        $this->notifier = new SleeperNotifier();
-        Server::getInstance()->getTickSleeper()->addNotifier($this->notifier, function (): void {
-            assert($this->dataConnector instanceof DataConnectorImpl); // otherwise, wtf
-            $this->dataConnector->checkResults();
-        });
+	/**
+	 * SqlThreadPool constructor.
+	 *
+	 * @param callable $workerFactory create a child worker: <code>function(?Threaded $bufferSend = null, ?Threaded $bufferRecv = null) : {@link BaseSqlThread}{}</code>
+	 * @param int      $workerLimit the maximum number of workers to create. Workers are created lazily.
+	 */
+	public function __construct(callable $workerFactory, int $workerLimit){
+		$this->notifier = new SleeperNotifier();
+		Server::getInstance()->getTickSleeper()->addNotifier($this->notifier, function() : void{
+			assert($this->dataConnector instanceof DataConnectorImpl); // otherwise, wtf
+			$this->dataConnector->checkResults();
+		});
 
-        $this->workerFactory = $workerFactory;
-        $this->workerLimit = $workerLimit;
-        $this->bufferSend = new QuerySendQueue();
-        $this->bufferRecv = new QueryRecvQueue();
+		$this->workerFactory = $workerFactory;
+		$this->workerLimit = $workerLimit;
+		$this->bufferSend = new QuerySendQueue();
+		$this->bufferRecv = new QueryRecvQueue();
 
-        $this->addWorker();
-    }
+		$this->addWorker();
+	}
 
-    private function addWorker(): void
-    {
-        $this->workers[] = ($this->workerFactory)($this->notifier, $this->bufferSend, $this->bufferRecv);
-    }
+	private function addWorker() : void{
+		$this->workers[] = ($this->workerFactory)($this->notifier, $this->bufferSend, $this->bufferRecv);
+	}
 
-    public function join(): void
-    {
-        foreach ($this->workers as $worker) {
-            $worker->join();
-        }
-    }
+	public function join() : void{
+		foreach($this->workers as $worker){
+			$worker->join();
+		}
+	}
 
-    public function stopRunning(): void
-    {
-        foreach ($this->workers as $worker) {
-            $worker->stopRunning();
-        }
-    }
+	public function stopRunning() : void{
+		foreach($this->workers as $worker){
+			$worker->stopRunning();
+		}
+	}
 
-    public function addQuery(int $queryId, array $modes, array $queries, array $params): void
-    {
-        $this->bufferSend->scheduleQuery($queryId, $modes, $queries, $params);
+	public function addQuery(int $queryId, array $modes, array $queries, array $params) : void{
+		$this->bufferSend->scheduleQuery($queryId, $modes, $queries, $params);
 
-        // check if we need to increase worker size
-        foreach ($this->workers as $worker) {
-            if (!$worker->isBusy()) {
-                return;
-            }
-        }
-        if (count($this->workers) < $this->workerLimit) {
-            $this->addWorker();
-        }
-    }
+		// check if we need to increase worker size
+		foreach($this->workers as $worker){
+			if(!$worker->isBusy()){
+				return;
+			}
+		}
+		if(count($this->workers) < $this->workerLimit){
+			$this->addWorker();
+		}
+	}
 
-    public function readResults(array &$callbacks): void
-    {
-        while ($this->bufferRecv->fetchResults($queryId, $results)) {
-            if (!isset($callbacks[$queryId])) {
-                throw new InvalidArgumentException("Missing handler for query #$queryId");
-            }
+	public function readResults(array &$callbacks) : void{
+		while($this->bufferRecv->fetchResults($queryId, $results)){
+			if(!isset($callbacks[$queryId])){
+				throw new InvalidArgumentException("Missing handler for query #$queryId");
+			}
 
-            $callbacks[$queryId]($results);
-            unset($callbacks[$queryId]);
-        }
-    }
+			$callbacks[$queryId]($results);
+			unset($callbacks[$queryId]);
+		}
+	}
 
-    public function connCreated(): bool
-    {
-        return $this->workers[0]->connCreated();
-    }
+	public function connCreated() : bool{
+		return $this->workers[0]->connCreated();
+	}
 
-    public function hasConnError(): bool
-    {
-        return $this->workers[0]->hasConnError();
-    }
+	public function hasConnError() : bool{
+		return $this->workers[0]->hasConnError();
+	}
 
-    public function getConnError(): ?string
-    {
-        return $this->workers[0]->getConnError();
-    }
+	public function getConnError() : ?string{
+		return $this->workers[0]->getConnError();
+	}
 
-    public function getLoad(): float
-    {
-        return $this->bufferSend->count() / (float)$this->workerLimit;
-    }
+	public function getLoad() : float{
+		return $this->bufferSend->count() / (float) $this->workerLimit;
+	}
 }

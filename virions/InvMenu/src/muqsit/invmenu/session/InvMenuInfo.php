@@ -13,5 +13,6 @@ final class InvMenuInfo{
 		public InvMenu $menu,
 		public InvMenuGraphic $graphic,
 		public ?string $graphic_name
-	){}
+	){
+	}
 }

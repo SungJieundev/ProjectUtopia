@@ -24,30 +24,25 @@ namespace poggit\libasynql\mysqli;
 
 use poggit\libasynql\result\SqlColumnInfo;
 
-class MysqlColumnInfo extends SqlColumnInfo
-{
-    private $flags;
-    private $mysqlType;
+class MysqlColumnInfo extends SqlColumnInfo{
+	private $flags;
+	private $mysqlType;
 
-    public function __construct(string $name, string $type, int $flags, int $mysqlType)
-    {
-        parent::__construct($name, $type);
-        $this->flags = $flags;
-        $this->mysqlType = $mysqlType;
-    }
+	public function __construct(string $name, string $type, int $flags, int $mysqlType){
+		parent::__construct($name, $type);
+		$this->flags = $flags;
+		$this->mysqlType = $mysqlType;
+	}
 
-    public function getFlags(): int
-    {
-        return $this->flags;
-    }
+	public function getFlags() : int{
+		return $this->flags;
+	}
 
-    public function hasFlag(int $flag): bool
-    {
-        return ($this->flags & $flag) > 0;
-    }
+	public function hasFlag(int $flag) : bool{
+		return ($this->flags & $flag) > 0;
+	}
 
-    public function getMysqlType(): int
-    {
-        return $this->mysqlType;
-    }
+	public function getMysqlType() : int{
+		return $this->mysqlType;
+	}
 }

@@ -16,7 +16,8 @@ final class PlayerSession{
 	public function __construct(
 		private Player $player,
 		private PlayerNetwork $network
-	){}
+	){
+	}
 
 	/**
 	 * @internal
@@ -34,10 +35,11 @@ final class PlayerSession{
 	}
 
 	/**
+	 * @param InvMenuInfo|null            $current
+	 * @param (Closure(bool) : void)|null $callback
+	 *
 	 * @internal use InvMenu::send() instead.
 	 *
-	 * @param InvMenuInfo|null $current
-	 * @param (Closure(bool) : void)|null $callback
 	 */
 	public function setCurrentMenu(?InvMenuInfo $current, ?Closure $callback = null) : void{
 		if($this->current !== null){
@@ -49,7 +51,7 @@ final class PlayerSession{
 		if($this->current !== null){
 			$current_id = spl_object_id($this->current);
 			$this->current->graphic->send($this->player, $this->current->graphic_name);
-			$this->network->waitUntil(PlayerNetwork::DELAY_TYPE_OPERATION, $this->current->graphic->getAnimationDuration(), function(bool $success) use($callback, $current_id) : bool{
+			$this->network->waitUntil(PlayerNetwork::DELAY_TYPE_OPERATION, $this->current->graphic->getAnimationDuration(), function(bool $success) use ($callback, $current_id) : bool{
 				$current = $this->current;
 				if($current !== null && spl_object_id($current) === $current_id){
 					if($success){
@@ -71,7 +73,7 @@ final class PlayerSession{
 				return false;
 			});
 		}else{
-			$this->network->wait(PlayerNetwork::DELAY_TYPE_ANIMATION_WAIT, static function(bool $success) use($callback) : bool{
+			$this->network->wait(PlayerNetwork::DELAY_TYPE_ANIMATION_WAIT, static function(bool $success) use ($callback) : bool{
 				if($callback !== null){
 					$callback($success);
 				}
@@ -85,8 +87,8 @@ final class PlayerSession{
 	}
 
 	/**
-	 * @internal use Player::removeCurrentWindow() instead
 	 * @return bool
+	 * @internal use Player::removeCurrentWindow() instead
 	 */
 	public function removeCurrentMenu() : bool{
 		if($this->current !== null){

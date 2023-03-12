@@ -37,7 +37,7 @@ abstract class PromiseState{
 	/** @var Throwable */
 	protected $rejected;
 
-	/** @var bool  */
+	/** @var bool */
 	protected $cancelled = false;
 
 	/**

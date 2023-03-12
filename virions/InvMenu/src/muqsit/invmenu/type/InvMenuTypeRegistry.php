@@ -21,21 +21,21 @@ final class InvMenuTypeRegistry{
 			->setBlock(VanillaBlocks::CHEST())
 			->setSize(27)
 			->setBlockActorId("Chest")
-		->build());
+			->build());
 
 		$this->register(InvMenuTypeIds::TYPE_DOUBLE_CHEST, InvMenuTypeBuilders::DOUBLE_PAIRABLE_BLOCK_ACTOR_FIXED()
 			->setBlock(VanillaBlocks::CHEST())
 			->setSize(54)
 			->setBlockActorId("Chest")
 			->setAnimationDuration(75)
-		->build());
+			->build());
 
 		$this->register(InvMenuTypeIds::TYPE_HOPPER, InvMenuTypeBuilders::BLOCK_ACTOR_FIXED()
 			->setBlock(VanillaBlocks::HOPPER())
 			->setSize(5)
 			->setBlockActorId("Hopper")
 			->setNetworkWindowType(WindowTypes::HOPPER)
-		->build());
+			->build());
 	}
 
 	public function register(string $identifier, InvMenuType $type) : void{

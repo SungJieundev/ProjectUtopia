@@ -24,7 +24,8 @@ final class DoublePairableBlockActorFixedInvMenuType implements FixedInvMenuType
 		private string $tile_id,
 		private ?InvMenuGraphicNetworkTranslator $network_translator = null,
 		private int $animation_duration = 0
-	){}
+	){
+	}
 
 	public function getSize() : int{
 		return $this->size;

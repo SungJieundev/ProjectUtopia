@@ -24,10 +24,8 @@ namespace poggit\libasynql;
 
 use InvalidArgumentException;
 
-class ConfigException extends InvalidArgumentException
-{
-    public function __construct(string $message = '')
-    {
-        parent::__construct('Config problem: ' . $message);
-    }
+class ConfigException extends InvalidArgumentException{
+	public function __construct(string $message = ''){
+		parent::__construct('Config problem: ' . $message);
+	}
 }

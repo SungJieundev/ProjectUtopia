@@ -22,7 +22,6 @@ declare(strict_types=1);
 
 namespace poggit\libasynql;
 
-class SqlResult
-{
+class SqlResult{
 
 }

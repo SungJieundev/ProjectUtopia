@@ -26,6 +26,5 @@ namespace poggit\libasynql\libs\SOFe\AwaitGenerator;
  * @template T
  * @internal
  */
-final class EmptyChannelState
-{
+final class EmptyChannelState{
 }

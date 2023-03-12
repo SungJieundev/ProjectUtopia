@@ -24,51 +24,51 @@ namespace poggit\libasynql;
 
 use poggit\libasynql\generic\GenericVariable;
 
-interface GenericStatement
-{
-    /**
-     * Returns the dialect this query is intended for.
-     *
-     * @return string one of the constants in {@link SqlDialect}
-     */
-    public function getDialect(): string;
+interface GenericStatement{
+	/**
+	 * Returns the dialect this query is intended for.
+	 *
+	 * @return string one of the constants in {@link SqlDialect}
+	 */
+	public function getDialect() : string;
 
-    /**
-     * Returns the identifier name of this query
-     *
-     * @return string[]
-     */
-    public function getName(): string;
+	/**
+	 * Returns the identifier name of this query
+	 *
+	 * @return string[]
+	 */
+	public function getName() : string;
 
-    public function getQuery(): array;
+	public function getQuery() : array;
 
-    public function getDoc(): string;
+	public function getDoc() : string;
 
-    /**
-     * The variable list ordered by original declaration order
-     *
-     * @return GenericVariable[]
-     */
-    public function getOrderedVariables(): array;
+	/**
+	 * The variable list ordered by original declaration order
+	 *
+	 * @return GenericVariable[]
+	 */
+	public function getOrderedVariables() : array;
 
-    /**
-     * Returns the variables required by this statement
-     *
-     * @return GenericVariable[]
-     */
-    public function getVariables(): array;
+	/**
+	 * Returns the variables required by this statement
+	 *
+	 * @return GenericVariable[]
+	 */
+	public function getVariables() : array;
 
-    public function getFile(): ?string;
+	public function getFile() : ?string;
 
-    public function getLineNumber(): int;
+	public function getLineNumber() : int;
 
-    /**
-     * Creates a query based on the args and the backend
-     *
-     * @param mixed[] $vars the input arguments
-     * @param string|null $placeHolder the backend-dependent variable placeholder constant, if any
-     * @param mixed[][]   &$outArgs will be filled with the variables to be passed to the backend
-     * @return string[]
-     */
-    public function format(array $vars, ?string $placeHolder, ?array &$outArgs): array;
+	/**
+	 * Creates a query based on the args and the backend
+	 *
+	 * @param mixed[]      $vars the input arguments
+	 * @param string|null  $placeHolder the backend-dependent variable placeholder constant, if any
+	 * @param mixed[][]   &$outArgs will be filled with the variables to be passed to the backend
+	 *
+	 * @return string[]
+	 */
+	public function format(array $vars, ?string $placeHolder, ?array &$outArgs) : array;
 }

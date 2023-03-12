@@ -68,7 +68,7 @@ final class Mutex{
 
 		yield Await::ONCE;
 
-		if(!$this->acquired) {
+		if(!$this->acquired){
 			throw new AssertionError("Mutex->acquired should remain true if queue is nonempty");
 		}
 	}
@@ -96,7 +96,9 @@ final class Mutex{
 
 	/**
 	 * @template T
+	 *
 	 * @param Closure(): Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T> $generatorClosure
+	 *
 	 * @return Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T>
 	 */
 	public function runClosure(Closure $generatorClosure) : Generator{
@@ -105,7 +107,9 @@ final class Mutex{
 
 	/**
 	 * @template T
+	 *
 	 * @param Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T> $generator
+	 *
 	 * @return Generator<mixed, Await::RESOLVE|null|Await::RESOLVE_MULTI|Await::REJECT|Await::ONCE|Await::ALL|Await::RACE|Generator, mixed, T>
 	 */
 	public function run(Generator $generator) : Generator{

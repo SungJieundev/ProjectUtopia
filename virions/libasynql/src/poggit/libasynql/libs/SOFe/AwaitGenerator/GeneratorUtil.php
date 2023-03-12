@@ -25,40 +25,39 @@ namespace poggit\libasynql\libs\SOFe\AwaitGenerator;
 use Generator;
 use Throwable;
 
-class GeneratorUtil
-{
-    /**
-     * Returns a generator that yields nothing and returns $ret
-     *
-     * @param mixed $ret
-     * @return Generator
-     *
-     * @template T
-     * @phpstan-param T $ret
-     * @phpstan-return Generator<never, never, never, T>
-     */
-    public static function empty($ret = null): Generator
-    {
-        false && yield;
-        return $ret;
-    }
+class GeneratorUtil{
+	/**
+	 * Returns a generator that yields nothing and returns $ret
+	 *
+	 * @param mixed     $ret
+	 *
+	 * @return Generator
+	 *
+	 * @template T
+	 * @phpstan-param T $ret
+	 * @phpstan-return Generator<never, never, never, T>
+	 */
+	public static function empty($ret = null) : Generator{
+		false && yield;
+		return $ret;
+	}
 
-    /**
-     * Returns a generator that yields nothing and throws $throwable
-     *
-     * @template T of Throwable
-     * @param Throwable $throwable
-     *
-     * @return Generator
-     * @throws Throwable
-     *
-     * @phpstan-param T $throwable
-     * @phpstan-return Generator<never, never, never, never>
-     * @throws T
-     */
-    public static function throw(Throwable $throwable): Generator
-    {
-        false && yield;
-        throw $throwable;
-    }
+	/**
+	 * Returns a generator that yields nothing and throws $throwable
+	 *
+	 * @template T of Throwable
+	 *
+	 * @param Throwable $throwable
+	 *
+	 * @return Generator
+	 * @throws Throwable
+	 *
+	 * @phpstan-param T $throwable
+	 * @phpstan-return Generator<never, never, never, never>
+	 * @throws T
+	 */
+	public static function throw(Throwable $throwable) : Generator{
+		false && yield;
+		throw $throwable;
+	}
 }
