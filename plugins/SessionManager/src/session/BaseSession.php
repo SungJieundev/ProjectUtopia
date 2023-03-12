@@ -11,6 +11,8 @@ abstract class BaseSession{
 
 	protected bool $loaded = false;
 
+	private int $offlineTick = 0;
+
 	public function __construct(protected string $name, protected ?Player $player = null){ }
 
 	public function getName() : string{
@@ -19,6 +21,14 @@ abstract class BaseSession{
 
 	public function getPlayer() : ?Player{
 		return $this->player;
+	}
+
+	public function isOffline() : bool{
+		return $this->player === null || !$this->player->isConnected();
+	}
+
+	public function setOnline(Player $player) : void{
+		$this->player = $player;
 	}
 
 	abstract public function save(bool $offline = true) : void;
@@ -36,5 +46,13 @@ abstract class BaseSession{
 	}
 
 	public function tick() : void{
+	}
+
+	public function offlineTick() : void{
+		if($this->player === null){
+			if(++$this->offlineTick >= 60){
+				$this->forceRemoveSession();
+			}
+		}
 	}
 }

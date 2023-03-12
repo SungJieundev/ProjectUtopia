@@ -46,6 +46,14 @@ final class Loader extends PluginBase{
 			Await::f2c(function() use ($event) : \Generator{
 				$player = $event->getPlayer();
 				$name = strtolower($player->getName());
+				if(isset($this->sessions[$name])){
+					foreach($this->sessions[$name] as $_ => $session){
+						if($session->isOffline()){
+							$session->setOnline($player);
+						}
+					}
+					return;
+				}
 				$promises = [];
 				foreach($this->sessionToLoad as $index => $registerFunction){
 					$promises[$index] = $registerFunction($name, $player, true);
@@ -114,4 +122,6 @@ final class Loader extends PluginBase{
 			unset($this->sessions[$session->getName()][spl_object_id($session)]);
 		}
 	}
+
+	public static function null(BaseSession $_) : void{}
 }

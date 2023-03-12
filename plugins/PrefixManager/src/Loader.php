@@ -20,7 +20,7 @@ use function strtolower;
 final class Loader extends PluginBase{
 	use SingletonTrait;
 
-	public static string $prefix = "§6§l[§f!§6] §r§7";
+	public static string $prefix = "§b§l[알림] §r§7";
 
 	public static Database $database;
 

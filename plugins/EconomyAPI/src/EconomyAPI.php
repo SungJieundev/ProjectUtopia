@@ -14,7 +14,6 @@ use alvin0319\EconomyAPI\currency\Currency;
 use alvin0319\EconomyAPI\currency\CurrencyWon;
 use alvin0319\EconomyAPI\session\EconomySession;
 use alvin0319\SessionManager\Loader;
-use alvin0319\SessionManager\session\BaseSession;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
@@ -58,9 +57,7 @@ final class EconomyAPI extends PluginBase{
 		$this->connector->waitAll();
 		$this->initializeCurrencies();
 		$this->registerCommands();
-		Loader::getInstance()->registerSessionLoader($this->createSession(...), function(BaseSession $session) : void{
-			$session->getPlayer()?->sendMessage("Session loaded!");
-		});
+		Loader::getInstance()->registerSessionLoader($this->createSession(...), Loader::null(...));
 	}
 
 	protected function onDisable() : void{

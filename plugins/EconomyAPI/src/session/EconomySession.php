@@ -20,8 +20,6 @@ final class EconomySession extends BaseSession{
 	/** @var \Closure[] */
 	private array $queuedClosures = [];
 
-	private int $offlineTick = 0;
-
 	/**
 	 * @param int[] $currencies
 	 */
@@ -72,18 +70,6 @@ final class EconomySession extends BaseSession{
 			}
 			$this->queuedClosures = [];
 		}
-	}
-
-	public function isOffline() : bool{
-		return $this->player === null || !$this->player->isConnected();
-	}
-
-	public function getPlayer() : ?Player{
-		return $this->player;
-	}
-
-	public function setOnline(Player $player) : void{
-		$this->player = $player;
 	}
 
 	public function addMoney(int $money, Currency $currency, bool $sync = true) : void{
@@ -142,14 +128,6 @@ final class EconomySession extends BaseSession{
 
 	public function onUpdateNotify(Currency $currency) : void{
 		// TODO
-	}
-
-	public function tick() : void{
-		if($this->player === null){
-			if(++$this->offlineTick >= 60){
-				$this->forceRemoveSession();
-			}
-		}
 	}
 
 	public function onPlayerQuit() : void{
