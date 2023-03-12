@@ -29,10 +29,29 @@
 		"friendsofphp/php-cs-fixer": "^v3.13"
 	},
 	"scripts": {
-		"lint": ".\\bin\\php\\php.exe vendor/bin/phpstan analyse plugins",
-		"generate-baseline": ".\\bin\\php\\php.exe vendor/bin/phpstan analyse plugins --generate-baseline --allow-empty-baseline",
+		"lint": [
+			"composer install --dev --ignore-platform-reqs",
+			".\\bin\\php\\php.exe vendor/bin/phpstan analyse plugins",
+			"rmdir /S /Q vendor"
+		],
+		"lintDoNotRemove": [
+			"composer install --dev --ignore-platform-reqs",
+			".\\bin\\php\\php.exe vendor/bin/phpstan analyse plugins"
+		],
+		"generate-baseline": [
+			"composer install --dev --ignore-platform-reqs",
+			".\\bin\\php\\php.exe vendor/bin/phpstan analyse plugins --generate-baseline --allow-empty-baseline",
+			"rmdir /S /Q vendor"
+		],
 		"lintWithDebug": "php vendor/bin/phpstan analyse plugins --debug",
 		"fix": [
+			"composer install --dev --ignore-platform-reqs",
+			"@putenv PHP_CS_FIXER_IGNORE_ENV=true",
+			".\\bin\\php\\php.exe vendor/bin/php-cs-fixer fix plugins",
+			"rmdir /S /Q vendor"
+		],
+		"fixDoNotRemove": [
+			"composer install --dev --ignore-platform-reqs",
 			"@putenv PHP_CS_FIXER_IGNORE_ENV=true",
 			".\\bin\\php\\php.exe vendor/bin/php-cs-fixer fix plugins"
 		]
