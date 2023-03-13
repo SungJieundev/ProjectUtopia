@@ -59,6 +59,7 @@
 	"require": {
 		"ext-yaml": "*",
 		"ext-pthreads": "*",
-		"ext-gd": "*"
+		"ext-gd": "*",
+		"ext-chunkutils2": "*"
 	}
 }
