@@ -13,9 +13,6 @@ use pocketmine\player\Player;
 use pocketmine\timings\TimingsHandler;
 use pocketmine\utils\EnumTrait;
 use pocketmine\world\format\io\FastChunkSerializer;
-use pocketmine\world\format\PalettedBlockArray;
-use pocketmine\world\format\SubChunk;
-use pocketmine\world\World;
 
 /**
  * @method static Weather SUNNY()

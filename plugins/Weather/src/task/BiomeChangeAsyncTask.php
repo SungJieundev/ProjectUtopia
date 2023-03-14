@@ -23,6 +23,7 @@ final class BiomeChangeAsyncTask extends AsyncTask{
 
 	private float $startTime;
 
+	/** @param string[] $chunks */
 	public function __construct(World $world, array $chunks, private readonly int $biomeId){
 		$this->storeLocal(self::TAG_WORLD, $world);
 		$this->chunks = \ThreadedArray::fromArray($chunks);
@@ -54,6 +55,7 @@ final class BiomeChangeAsyncTask extends AsyncTask{
 		$endTime = microtime(true);
 		/** @var World $world */
 		$world = $this->fetchLocal(self::TAG_WORLD);
+		/** @var string[] $chunks */
 		$chunks = (array) igbinary_unserialize($this->getResult());
 		foreach($chunks as $chunkIndex => $chunkData){
 			$chunk = FastChunkSerializer::deserializeTerrain($chunkData);

@@ -25,6 +25,10 @@ use pocketmine\world\World;
 final class Loader extends PluginBase{
 	use SingletonTrait;
 
+	/**
+	 * @var int[]
+	 * @phpstan-param array<int, int> worldId => biomeId
+	 */
 	private static array $worldToBiomeId = [];
 
 	public static function setBiomeId(World $world, int $biomeId) : void{
