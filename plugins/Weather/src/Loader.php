@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace alvin0319\Weather;
 
+use alvin0319\Weather\command\WeatherCommand;
 use alvin0319\Weather\season\Weather;
 use alvin0319\Weather\task\BiomeChangeAsyncTask;
 use kim\present\lib\arrayutils\ArrayUtils;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\EventPriority;
-use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\world\ChunkLoadEvent;
 use pocketmine\event\world\WorldLoadEvent;
 use pocketmine\player\Player;
@@ -24,6 +24,8 @@ use pocketmine\world\World;
 
 final class Loader extends PluginBase{
 	use SingletonTrait;
+
+	public static string $prefix = "§b§l[알림] §r§7";
 
 	/**
 	 * @var int[]
@@ -65,10 +67,6 @@ final class Loader extends PluginBase{
 			}
 			Weather::clearWeather($player);
 		}, EventPriority::NORMAL, $this);
-		$this->getServer()->getPluginManager()->registerEvent(PlayerJoinEvent::class, function(PlayerJoinEvent $event) : void{
-			$player = $event->getPlayer();
-			Weather::SNOWY()->sendWeatherPacket($player);
-		}, EventPriority::NORMAL, $this);
 		$this->getServer()->getPluginManager()->registerEvent(ChunkLoadEvent::class, function(ChunkLoadEvent $event) : void{
 			self::$biomeChange->startTiming();
 			$world = $event->getWorld();
@@ -102,5 +100,6 @@ final class Loader extends PluginBase{
 				$this->getLogger()->debug("Biome change task submitted for world " . $world->getDisplayName());
 			}
 		}, EventPriority::NORMAL, $this);
+		$this->getServer()->getCommandMap()->register("weather", new WeatherCommand());
 	}
 }
