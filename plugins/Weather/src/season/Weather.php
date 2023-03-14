@@ -74,11 +74,11 @@ final class Weather{
 		$oldBiomeId = Loader::getBiomeId($world);
 		if($oldBiomeId !== null && $oldBiomeId !== $this->biomeId){
 			Loader::setBiomeId($world, $this->biomeId);
+			foreach($world->getLoadedChunks() as $chunkIndex => $chunk){
+				$chunks[$chunkIndex] = FastChunkSerializer::serializeTerrain($chunk);
+			}
+			$player->getServer()->getAsyncPool()->submitTask(new BiomeChangeAsyncTask($world, $chunks, $this->biomeId));
 		}
-		foreach($world->getLoadedChunks() as $chunkIndex => $chunk){
-			$chunks[$chunkIndex] = FastChunkSerializer::serializeTerrain($chunk);
-		}
-		$player->getServer()->getAsyncPool()->submitTask(new BiomeChangeAsyncTask($world, $chunks, $this->biomeId));
 		if($stop){
 			if($this->stopOnly){
 				foreach($this->eventTypes as $eventType){
