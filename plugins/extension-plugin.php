@@ -70,6 +70,9 @@ function decodeItem(string $data) : Item{
 	return Item::nbtDeserialize($serializer->read(base64_encode($data))->mustGetCompoundTag());
 }
 
+function makePHPStanHappy() : void{
+}
+
 final class ExtensionPlugin extends PluginBase{
 
 	protected function onEnable() : void{

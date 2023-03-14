@@ -60,6 +60,7 @@
 		"ext-yaml": "*",
 		"ext-pthreads": "*",
 		"ext-gd": "*",
-		"ext-chunkutils2": "*"
+		"ext-chunkutils2": "*",
+		"ext-igbinary": "*"
 	}
 }

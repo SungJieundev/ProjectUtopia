@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace alvin0319\Weather\season;
 
+use alvin0319\Weather\Loader;
+use alvin0319\Weather\task\BiomeChangeAsyncTask;
 use pocketmine\data\bedrock\BiomeIds;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\types\LevelEvent;
 use pocketmine\player\Player;
 use pocketmine\timings\TimingsHandler;
 use pocketmine\utils\EnumTrait;
+use pocketmine\world\format\io\FastChunkSerializer;
 use pocketmine\world\format\PalettedBlockArray;
 use pocketmine\world\format\SubChunk;
+use pocketmine\world\World;
 
 /**
  * @method static Weather SUNNY()
@@ -65,25 +69,13 @@ final class Weather{
 
 	public function sendWeatherPacket(Player $player, bool $stop = false) : void{
 		self::$weatherChange->startTiming();
-		$biomeArray = new PalettedBlockArray($this->biomeId);
 		$world = $player->getWorld();
-		foreach($world->getProvider()->getAllChunks() as $chunkArray => $chunkData){
-			[$chunkX, $chunkZ] = $chunkArray;
-			$chunk = $chunkData->getChunk();
-			foreach($chunk->getSubChunks() as $subChunkY => $subChunk){
-				$newSubChunk = new SubChunk(
-					$subChunk->getEmptyBlockId(),
-					$subChunk->getBlockLayers(),
-					$biomeArray,
-					$subChunk->getBlockSkyLightArray(),
-					$subChunk->getBlockLightArray()
-				);
-				$chunk->setSubChunk($subChunkY, $newSubChunk);
-			}
-			$world->setChunk($chunkX, $chunkZ, $chunk);
-			$world->saveChunks();
-			$world->doChunkGarbageCollection();
+		$chunks = [];
+		Loader::setBiomeId($world, $this->biomeId);
+		foreach($world->getLoadedChunks() as $chunkIndex => $chunk){
+			$chunks[$chunkIndex] = FastChunkSerializer::serializeTerrain($chunk);
 		}
+		$player->getServer()->getAsyncPool()->submitTask(new BiomeChangeAsyncTask($world, $chunks, $this->biomeId));
 		if($stop){
 			if($this->stopOnly){
 				foreach($this->eventTypes as $eventType){
