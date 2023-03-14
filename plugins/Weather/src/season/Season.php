@@ -27,6 +27,16 @@ final class Season{
 		);
 	}
 
+	public static function from(string $name) : Season{
+		return match ($name) {
+			"spring" => self::SPRING(),
+			"summer" => self::SUMMER(),
+			"autumn" => self::AUTUMN(),
+			"winter" => self::WINTER(),
+			default => throw new \InvalidArgumentException("Invalid season name $name")
+		};
+	}
+
 	/** @phpstan-var list<Weather> */
 	public readonly array $availableWeathers;
 

@@ -51,6 +51,16 @@ final class Weather{
 		);
 	}
 
+	public static function from(string $name) : Weather{
+		return match ($name) {
+			"sunny" => self::SUNNY(),
+			"rainy" => self::RAINY(),
+			"snowy" => self::SNOWY(),
+			"thunder" => self::THUNDER(),
+			default => throw new \InvalidArgumentException("Invalid weather name $name")
+		};
+	}
+
 	/** @phpstan-param list<int>|array<string, int> $eventTypes */
 	public function __construct(
 		string $enumName,
