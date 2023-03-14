@@ -22,7 +22,7 @@ use pocketmine\world\format\io\FastChunkSerializer;
  */
 final class Weather{
 	use EnumTrait {
-		__construct as EnumTrait__Construct;
+		EnumTrait::__construct as EnumTrait__Construct;
 	}
 
 	public const START = "start";
