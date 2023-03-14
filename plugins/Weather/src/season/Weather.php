@@ -71,7 +71,10 @@ final class Weather{
 		self::$weatherChange->startTiming();
 		$world = $player->getWorld();
 		$chunks = [];
-		Loader::setBiomeId($world, $this->biomeId);
+		$oldBiomeId = Loader::getBiomeId($world);
+		if($oldBiomeId !== null && $oldBiomeId !== $this->biomeId){
+			Loader::setBiomeId($world, $this->biomeId);
+		}
 		foreach($world->getLoadedChunks() as $chunkIndex => $chunk){
 			$chunks[$chunkIndex] = FastChunkSerializer::serializeTerrain($chunk);
 		}

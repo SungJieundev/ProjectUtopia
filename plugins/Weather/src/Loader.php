@@ -37,6 +37,10 @@ final class Loader extends PluginBase{
 		}
 	}
 
+	public static function getBiomeId(World $world) : ?int{
+		return self::$worldToBiomeId[$world->getId()] ?? null;
+	}
+
 	public static TimingsHandler $biomeChange;
 
 	protected function onLoad() : void{
