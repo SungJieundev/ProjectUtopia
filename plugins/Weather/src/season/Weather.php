@@ -105,13 +105,15 @@ final class Weather{
 				);
 			}
 		}else{
-			$player->getNetworkSession()->sendDataPacket(
-				LevelEventPacket::create(
-					$this->eventTypes[self::START],
-					10000,
-					$player->getPosition()->asVector3()
-				)
-			);
+			if(!$this->stopOnly){
+				$player->getNetworkSession()->sendDataPacket(
+					LevelEventPacket::create(
+						$this->eventTypes[self::START],
+						10000,
+						$player->getPosition()->asVector3()
+					)
+				);
+			}
 		}
 		self::$weatherChange->stopTiming();
 	}
