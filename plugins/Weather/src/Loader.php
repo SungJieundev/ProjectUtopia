@@ -27,7 +27,7 @@ final class Loader extends PluginBase{
 
 	/**
 	 * @var int[]
-	 * @phpstan-param array<int, int>
+	 * @phpstan-var array<int, int>
 	 */
 	private static array $worldToBiomeId = [];
 
