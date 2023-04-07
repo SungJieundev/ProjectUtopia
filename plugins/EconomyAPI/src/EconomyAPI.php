@@ -106,6 +106,12 @@ final class EconomyAPI extends PluginBase{
 	}
 
 	public function createSession(string $name, ?Player $player = null, bool $createIfNotExists = false) : \Generator{
+		if(isset($this->sessions[$name])){
+			$session = $this->sessions[$name]->get();
+			if($session !== null){
+				return $session;
+			}
+		}
 		$currencies = [];
 		$exists = true;
 		foreach($this->currencies as $_ => $currency){
